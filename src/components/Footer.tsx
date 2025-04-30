@@ -84,7 +84,7 @@ const Footer = ({
           <p>{singleItemsPricingValue.toFixed(2)}€</p>
         </div>
         <div className="flex justify-between">
-          <p>{`Ihr Hautliebe-Paket-Preis(pro Behandlung)`}</p>
+          <p>{`Ihr ZOEY ESTHETICS-Paket-Preis(pro Behandlung)`}</p>
           <p>
             {subtotal.toFixed(2)}€ {`(${discountOnSelectingMore.toFixed(2)}%)`}
           </p>
