@@ -10,6 +10,9 @@ import {
 import { pricingData } from "@/app/data";
 import Footer from "./Footer";
 import PricingTable from "./PricingTable";
+import CustomerDialog from "./CustomerDialog";
+import QuickNotes from "./QuickNotes";
+import BeforeAfterGallery from "./BeforeAfterGallery";
 
 const Home = () => {
   const [gender, setGender] = useState<Gender>("Frau");
@@ -19,6 +22,7 @@ const Home = () => {
     useState<PRICING_TYPE>("Area1");
   const [discountPercent, setDiscountPercent] = useState<number>(0);
   const [selectedItems, setSelectedItems] = useState<SELECTED_TYPE[]>([]);
+  const [sessionNotes, setSessionNotes] = useState<string[]>([]);
 
   const updatePricing = (
     selectedItems: SELECTED_TYPE[],
@@ -140,15 +144,37 @@ const Home = () => {
               </button>
             ))}
           </div>
-          <button
-            className="flex items-center gap-2 px-4 py-2 rounded-md border border-solid bg-red-600 text-sm text-white hover:bg-red-500"
-            onClick={() => {
-              setSelectedItems([]);
-              setDiscountPercent(0);
-            }}
-          >
-            Zurücksetzen
-          </button>
+          <div className="flex gap-2 flex-wrap">
+            <CustomerDialog
+              currentGender={gender}
+              selectedAreas={selectedItems.map((item) => ({
+                name: item.treatment.name,
+                price: item.price,
+              }))}
+              totalPrice={total}
+              onSave={(customer) => {
+                console.log("Kunde gespeichert:", customer);
+                alert(`Kunde ${customer.firstName} ${customer.lastName} wurde gespeichert!`);
+              }}
+            />
+            <QuickNotes
+              notes={sessionNotes}
+              onNotesChange={setSessionNotes}
+            />
+            <BeforeAfterGallery
+              selectedAreas={selectedItems.map((item) => item.treatment.name)}
+            />
+            <button
+              className="flex items-center gap-2 px-4 py-2 rounded-md border border-solid bg-red-600 text-sm text-white hover:bg-red-500"
+              onClick={() => {
+                setSelectedItems([]);
+                setDiscountPercent(0);
+                setSessionNotes([]);
+              }}
+            >
+              Zurücksetzen
+            </button>
+          </div>
         </div>
         {/* <div className="flex  "> */}
         <div className="flex flex-row  px-5 align-middle items-center gap-4 mb-6 flex-wrap">

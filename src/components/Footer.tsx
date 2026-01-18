@@ -1,5 +1,57 @@
 import { SELECTED_TYPE } from "@/app/types/types";
 import Link from "next/link";
+import { useState } from "react";
+import { CreditCard, ChevronDown, ChevronUp, TrendingDown, Sparkles } from "lucide-react";
+
+// Finanzierungsrechner Komponente
+const FinancingCalculator = ({ total }: { total: number }) => {
+  const [showFinancing, setShowFinancing] = useState(false);
+
+  // Berechne monatliche Raten (ohne Zinsen für Übersichtlichkeit)
+  const calculateMonthlyRate = (months: number) => {
+    return (total / months).toFixed(2);
+  };
+
+  if (total <= 0) return null;
+
+  return (
+    <div className="mt-3 border-t border-main-color pt-3">
+      <button
+        onClick={() => setShowFinancing(!showFinancing)}
+        className="flex items-center gap-2 text-sm font-medium text-main-color hover:text-opacity-80 w-full justify-between"
+      >
+        <span className="flex items-center gap-2">
+          <CreditCard size={18} />
+          Finanzierung möglich
+        </span>
+        {showFinancing ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+      </button>
+
+      {showFinancing && (
+        <div className="mt-2 bg-gray-50 rounded-md p-3 text-sm">
+          <p className="font-medium mb-2">Monatliche Raten:</p>
+          <div className="space-y-1 text-gray-700">
+            <div className="flex justify-between">
+              <span>6 Monate:</span>
+              <span className="font-semibold">{calculateMonthlyRate(6)}€/Monat</span>
+            </div>
+            <div className="flex justify-between">
+              <span>12 Monate:</span>
+              <span className="font-semibold">{calculateMonthlyRate(12)}€/Monat</span>
+            </div>
+            <div className="flex justify-between">
+              <span>24 Monate:</span>
+              <span className="font-semibold">{calculateMonthlyRate(24)}€/Monat</span>
+            </div>
+          </div>
+          <p className="text-xs text-gray-500 mt-2">
+            * Konditionen über Credit4Beauty
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Footer = ({
   selectedItems,
@@ -120,13 +172,42 @@ const Footer = ({
           <p>{total.toFixed(2)}€</p>
         </div>
 
+        {/* Du sparst - Highlight Box */}
+        {singleItemsPricingValue > total && selectedItems.length > 0 && (
+          <div className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg py-2 px-4 mt-2">
+            <Sparkles size={18} />
+            <span className="font-bold">
+              Du sparst {(singleItemsPricingValue - total).toFixed(2)}€
+            </span>
+            <span className="text-green-100">
+              ({((singleItemsPricingValue - total) / singleItemsPricingValue * 100).toFixed(0)}%)
+            </span>
+            <TrendingDown size={18} />
+          </div>
+        )}
+
+        {/* Hinweis für mehr Ersparnis */}
+        {selectedItems.length > 0 && selectedItems.length < 3 && (
+          <p className="text-xs text-center text-gray-500 mt-1">
+            Ab 3 Arealen: Zusätzlicher Mengenrabatt!
+          </p>
+        )}
+        {selectedItems.length >= 3 && selectedItems.length < 5 && (
+          <p className="text-xs text-center text-gray-500 mt-1">
+            Noch {5 - selectedItems.length} Areal(e) für maximalen Rabatt!
+          </p>
+        )}
+
+        {/* Finanzierungsrechner */}
+        <FinancingCalculator total={total} />
+
         {/* Link zur externen Website */}
         <div className="mt-4 text-center">
           <Link
             href="https://credit4beauty.de/"
             className="px-4 py-2 rounded-md bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-all"
           >
-            credi4beauty
+            Jetzt finanzieren
           </Link>
         </div>
       </div>
