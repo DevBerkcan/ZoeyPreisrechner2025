@@ -7,15 +7,15 @@ import { Users } from "lucide-react";
 
 const Navbar = () => {
   return (
-    <div className="mb-1 flex items-center gap-1 w-full px-2 py-0.5 bg-white shadow-md">
+    <div className="mb-1 flex items-center gap-1 w-full px-2 py-0.5 bg-white shadow-sm">
       {/* Logo Section */}
-      <div className="flex grow justify-center">
+      <div className="flex grow justify-center py-0.5">
         <Image
           src="/assets/Nazar-Logo.png"
           alt="Logo"
-          width={290}
-          height={250}
-          className="object-contain"
+          width={200}
+          height={140}
+          className="object-contain max-h-10 w-auto"
         />
       </div>
 
