@@ -86,129 +86,101 @@ const Footer = ({
   const discountOnSelectingMore = singleItemsPricingValue
     ? (100 * (singleItemsPricingValue - subtotal)) / singleItemsPricingValue
     : 0;
+  const [showDetails, setShowDetails] = useState(false);
+
   return (
-    <div className="fixed bottom-0 left-0 right-0 mt-6 border-t-2 text-main-color mb-2 border-t-main-color px-4 pt-4 bg-white shadow-lg">
-      <div className="space-y-2">
-        {/* {selectedItems.map((item, index) => (
-          <div key={index} className="flex justify-between items-center">
-            <p>{`${item.gender} - ${item.selectedTreatment} - ${item.treatment.name} (${item.area})`}</p>
-            <p>{`${item.price?.toFixed(2) || "0.00"}€`}</p>
-          </div>
-        ))} */}
+    <div className="fixed bottom-0 left-0 right-0 bg-white shadow-2xl border-t-2 border-main-color">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
+        {/* Main Price Display - Grid Layout for iPad/Desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+          {/* Left: Price Breakdown (collapsible on mobile) */}
+          <div className="md:col-span-1">
+            <button
+              onClick={() => setShowDetails(!showDetails)}
+              className="flex items-center gap-2 text-sm font-medium text-main-color md:hidden w-full justify-between"
+            >
+              <span>Preisdetails</span>
+              {showDetails ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+            </button>
 
-        {/* Einsparungen Abschnitt */}
-        {/* {selectedItems.length >= 3 && (
-          <div>
-            <h1 className="font-semibold">EINSPARUNGEN</h1>
-
-            <div className="flex justify-between">
-              <p>Einsparungen basierend auf Einzelpreis pro Behandlung</p>
-              <p>
-                {singleItemsPricingValue - subtotal} (
-                {(
-                  ((singleItemsPricingValue - subtotal) /
-                    singleItemsPricingValue) *
-                  100
-                ).toFixed(2)}
-                %)
-              </p>
-            </div>
-
-            {selectedItems.length >= 5 && (
-              <div className="flex justify-between">
-                <p>Einsparungen basierend auf ab 3 Areale</p>
-                <p>
-                  {threeItemsPricingValue - subtotal} (
-                  {(
-                    ((threeItemsPricingValue - subtotal) /
-                      threeItemsPricingValue) *
-                    100
-                  ).toFixed(2)}
-                  %)
-                </p>
+            <div className={`space-y-1 text-sm ${showDetails ? 'block' : 'hidden'} md:block`}>
+              <div className="flex justify-between text-gray-600">
+                <span>Einzelpreise:</span>
+                <span>{singleItemsPricingValue.toFixed(2)}€</span>
               </div>
+              <div className="flex justify-between text-gray-600">
+                <span>Paketpreis:</span>
+                <span className="text-main-color font-medium">
+                  {subtotal.toFixed(2)}€ <span className="text-xs">(-{discountOnSelectingMore.toFixed(0)}%)</span>
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">Rabatt:</span>
+                <input
+                  type="number"
+                  className="w-16 text-gray-800 border border-gray-300 px-2 py-1 rounded-lg text-center text-sm focus:ring-2 focus:ring-main-color focus:border-transparent"
+                  value={discountPercent}
+                  step={0.1}
+                  min={0}
+                  max={100}
+                  onChange={(e) => {
+                    const input = e.target.value;
+                    const value = parseFloat(input);
+                    if (input === "") {
+                      setDiscountPercent(0);
+                    } else if (value >= 0 && value <= 100) {
+                      setDiscountPercent(value);
+                    }
+                  }}
+                />
+                <span className="text-gray-600">%</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Center: Total Price - Prominent Display */}
+          <div className="md:col-span-1">
+            <div className="bg-main-color/5 p-4 rounded-xl border-l-4 border-main-color text-center md:text-left">
+              <p className="text-xs text-gray-500 uppercase tracking-wide">Gesamtbetrag</p>
+              <p className="text-3xl md:text-4xl font-bold text-main-color">
+                {total.toFixed(2)}€
+              </p>
+              {/* Savings Badge */}
+              {singleItemsPricingValue > total && selectedItems.length > 0 && (
+                <div className="inline-flex items-center gap-1 mt-2 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
+                  <Sparkles size={12} />
+                  <span>Du sparst {(singleItemsPricingValue - total).toFixed(2)}€</span>
+                  <TrendingDown size={12} />
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right: Actions */}
+          <div className="md:col-span-1 space-y-2">
+            {/* Hint for more savings */}
+            {selectedItems.length > 0 && selectedItems.length < 3 && (
+              <p className="text-xs text-center text-secondary-color font-medium">
+                Ab 3 Arealen: Zusätzlicher Mengenrabatt!
+              </p>
             )}
+            {selectedItems.length >= 3 && selectedItems.length < 5 && (
+              <p className="text-xs text-center text-secondary-color font-medium">
+                Noch {5 - selectedItems.length} Areal(e) für maximalen Rabatt!
+              </p>
+            )}
+
+            {/* Financing Calculator */}
+            <FinancingCalculator total={total} />
+
+            {/* Finance Button */}
+            <Link
+              href="https://credit4beauty.de/"
+              className="block w-full text-center px-4 py-3 rounded-lg bg-secondary-color text-white font-semibold min-h-[44px] hover:bg-orange-500 hover:shadow-lg transition-all duration-200 active:scale-95"
+            >
+              Jetzt finanzieren
+            </Link>
           </div>
-        )} */}
-        {/* Zwischensumme und Rabatt */}
-        <div className="flex justify-between">
-          <p>Summe der Einzelpreise:</p>
-          <p>{singleItemsPricingValue.toFixed(2)}€</p>
-        </div>
-        <div className="flex justify-between">
-          <p>{`Ihr ZOEY ESTHETICS-Paket-Preis(pro Behandlung)`}</p>
-          <p>
-            {subtotal.toFixed(2)}€ {`(${discountOnSelectingMore.toFixed(2)}%)`}
-          </p>
-        </div>
-        <div className="flex justify-between">
-          <p>Rabattprozentsatz:</p>
-          <div>
-            <input
-              type="number"
-              id="discountInput"
-              className="text-gray-800 border px-2 py-1 rounded"
-              value={discountPercent}
-              step={0.1}
-              min={0}
-              max={100}
-              onChange={(e) => {
-                const input = e.target.value;
-                const value = parseFloat(input);
-
-                if (input === "") {
-                  setDiscountPercent(0);
-                } else if (value >= 0 && value <= 100) {
-                  setDiscountPercent(value);
-                }
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Gesamtpreis nach Rabatt */}
-        <div className="flex justify-between items-center font-bold text-lg border-t border-gray-200 pt-2 mt-2">
-          <p>Gesamt:</p>
-          <p className="text-xl">{total.toFixed(2)}€</p>
-        </div>
-
-        {/* Du sparst - Highlight Box */}
-        {singleItemsPricingValue > total && selectedItems.length > 0 && (
-          <div className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg py-2 px-4 mt-2">
-            <Sparkles size={18} />
-            <span className="font-bold">
-              Du sparst {(singleItemsPricingValue - total).toFixed(2)}€
-            </span>
-            <span className="text-green-100">
-              ({((singleItemsPricingValue - total) / singleItemsPricingValue * 100).toFixed(0)}%)
-            </span>
-            <TrendingDown size={18} />
-          </div>
-        )}
-
-        {/* Hinweis für mehr Ersparnis */}
-        {selectedItems.length > 0 && selectedItems.length < 3 && (
-          <p className="text-xs text-center text-gray-500 mt-1">
-            Ab 3 Arealen: Zusätzlicher Mengenrabatt!
-          </p>
-        )}
-        {selectedItems.length >= 3 && selectedItems.length < 5 && (
-          <p className="text-xs text-center text-gray-500 mt-1">
-            Noch {5 - selectedItems.length} Areal(e) für maximalen Rabatt!
-          </p>
-        )}
-
-        {/* Finanzierungsrechner */}
-        <FinancingCalculator total={total} />
-
-        {/* Link zur externen Website */}
-        <div className="mt-4 text-center">
-          <Link
-            href="https://credit4beauty.de/"
-            className="px-4 py-2 rounded-md bg-secondary-color text-white font-semibold hover:opacity-90 transition-all"
-          >
-            Jetzt finanzieren
-          </Link>
         </div>
       </div>
     </div>

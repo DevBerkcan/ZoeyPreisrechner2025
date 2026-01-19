@@ -32,3 +32,14 @@ export type SELECTED_TYPE = {
 };
 
 export type PRICING_TYPE = "Area1" | "Area3" | "Area5";
+
+// Vergleichs-/Zwischenspeicher Feature
+export type COMPARISON_ITEM = {
+  id: string;
+  timestamp: number;
+  selectedItems: SELECTED_TYPE[];
+  subtotal: number;
+  total: number;
+  discountPercent: number;
+  label: string;
+};

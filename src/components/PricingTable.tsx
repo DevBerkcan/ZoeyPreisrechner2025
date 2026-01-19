@@ -25,92 +25,89 @@ const PricingTable = ({
   }
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-xl">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
       <div className="overflow-x-auto">
-        {/* Allow horizontal scrolling */}
-        <table className="w-full border-collapse border border-gray-300 text-gray-800">
+        <table className="w-full text-gray-800">
+          {/* Cleaner Header */}
           <thead>
-            <tr className="[&>th]:relative [&>th]:overflow-hidden">
-              <th className="py-2 px-2 bg-white/40">
-                <div className="relative z-10 flex items-center justify-center"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-violet-100/20 to-transparent" />
+            <tr className="bg-main-color text-white">
+              <th className="py-4 px-3 md:px-4 w-12"></th>
+              <th className="py-4 px-3 md:px-4 text-left text-sm md:text-base font-semibold">
+                Behandlung
               </th>
-              <th className="py-2 px-2 bg-white/40">
-                <div className="text-2xl bg-main-color rounded-t-full pt-5 pb-1 text-white">
-                  Treatment Name
-                </div>
+              <th className="py-4 px-3 md:px-4 text-center text-sm md:text-base font-semibold hidden md:table-cell">
+                ab 5 Areale
               </th>
-              <th className="py-2 px-2 bg-white/40">
-                <div className="text-2xl bg-main-color rounded-t-full pt-5 pb-1 text-white">
-                  ab 5 Areale
-                </div>
+              <th className="py-4 px-3 md:px-4 text-center text-sm md:text-base font-semibold hidden sm:table-cell">
+                ab 3 Areale
               </th>
-              <th className="py-2 px-2 bg-white/40">
-                <div className="text-2xl bg-main-color rounded-t-full pt-5 pb-1 text-white">
-                  Ab 3 Areale
-                </div>
-              </th>
-              <th className="py-2 px-2 bg-white/40">
-                <div className="text-2xl bg-main-color rounded-t-full pt-5 pb-1 text-white">
-                  Einzelpreis pro Behandlungen
-                </div>
+              <th className="py-4 px-3 md:px-4 text-center text-sm md:text-base font-semibold">
+                Einzelpreis
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-gray-100">
             {Object.entries(servicesBySelectedTreatment).map(
               ([serviceName, treatments], serviceIndex) => (
                 <React.Fragment key={serviceIndex}>
-                  {/* Collapsible Header */}
-                  <tr className="bg-gray-200 cursor-pointer">
-                    <td colSpan={6} className="px-4 py-3 font-semibold">
-                      {serviceName}{" "}
+                  {/* Section Header */}
+                  <tr className="bg-gray-100">
+                    <td colSpan={5} className="px-4 py-3 font-bold text-main-color text-sm md:text-base">
+                      {serviceName}
                     </td>
                   </tr>
-                  {/* Expandable Rows */}
+                  {/* Treatment Rows */}
                   {(treatments as Treatment[]).map(
-                    (treatment: Treatment, treatmentIndex) => (
-                      <tr
-                        key={treatmentIndex}
-                        className={`${
-                          treatmentIndex % 2 === 0 ? "bg-white" : "bg-gray-50"
-                        } hover:bg-gray-100 transition cursor-pointer`}
-                        onClick={() => addItemToCart(treatment, serviceName)}
-                      >
-                        <td className="border px-4 py-3 text-center">
-                          <input
-                            type="checkbox"
-                            className="w-4 h-4 text-gray-700 bg-gray-100 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                            checked={selectedItems.some(
-                              (item) =>
-                                item.gender === selectedGender &&
-                                item.area === serviceName &&
-                                item.treatment.name === treatment.name &&
-                                item.selectedTreatment === selectedTreatment
-                            )}
-                            onChange={() =>
-                              addItemToCart(treatment, serviceName)
-                            }
-                          />
-                        </td>
-                        <td className="border px-4 py-3">{treatment.name}</td>
-                        <td className="border px-4 py-3 text-center">
-                          {treatment.pricing["ab 5 Areale"] ?? 0}€
-                          {/* {treatment.pricing["ab 5 Areale"] && "€"} */}
-                        </td>
-                        <td className="border px-4 py-3 text-center">
-                          {treatment.pricing["ab 3 Areale"] ?? "0"}€
-                          {/* {treatment.pricing["ab 3 Areale"] && "€"} */}
-                        </td>
-                        <td className="border px-4 py-3 text-center">
-                          {(treatment.pricing["Einzelpreis pro Behandlung"] ||
-                            treatment.pricing["Kurspreis"]) ??
-                            0}
-                          {treatment.pricing["Einzelpreis pro Behandlung"] &&
-                            "€"}
-                        </td>
-                      </tr>
-                    )
+                    (treatment: Treatment, treatmentIndex) => {
+                      const isSelected = selectedItems.some(
+                        (item) =>
+                          item.gender === selectedGender &&
+                          item.area === serviceName &&
+                          item.treatment.name === treatment.name &&
+                          item.selectedTreatment === selectedTreatment
+                      );
+                      return (
+                        <tr
+                          key={treatmentIndex}
+                          className={`min-h-[52px] transition-all duration-200 cursor-pointer ${
+                            isSelected
+                              ? "bg-main-color/10 border-l-4 border-l-main-color"
+                              : "hover:bg-main-color/5"
+                          }`}
+                          onClick={() => addItemToCart(treatment, serviceName)}
+                        >
+                          <td className="px-3 md:px-4 py-4 text-center">
+                            <input
+                              type="checkbox"
+                              className="w-5 h-5 accent-main-color cursor-pointer transition-transform checked:scale-110"
+                              checked={isSelected}
+                              onChange={() =>
+                                addItemToCart(treatment, serviceName)
+                              }
+                            />
+                          </td>
+                          <td className="px-3 md:px-4 py-4 font-medium text-sm md:text-base">
+                            {treatment.name}
+                          </td>
+                          <td className="px-3 md:px-4 py-4 text-center hidden md:table-cell">
+                            <span className="text-sm md:text-base font-semibold text-gray-600">
+                              {treatment.pricing["ab 5 Areale"] ?? 0}€
+                            </span>
+                          </td>
+                          <td className="px-3 md:px-4 py-4 text-center hidden sm:table-cell">
+                            <span className="text-sm md:text-base font-semibold text-gray-600">
+                              {treatment.pricing["ab 3 Areale"] ?? 0}€
+                            </span>
+                          </td>
+                          <td className="px-3 md:px-4 py-4 text-center">
+                            <span className="text-base md:text-lg font-bold text-secondary-color">
+                              {(treatment.pricing["Einzelpreis pro Behandlung"] ||
+                                treatment.pricing["Kurspreis"]) ?? 0}€
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    }
                   )}
                 </React.Fragment>
               )

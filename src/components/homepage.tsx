@@ -6,6 +6,7 @@ import {
   PRICING_TYPE,
   SELECTED_TYPE,
   Treatment,
+  COMPARISON_ITEM,
 } from "@/app/types/types";
 import { pricingData } from "@/app/data";
 import Footer from "./Footer";
@@ -13,6 +14,7 @@ import PricingTable from "./PricingTable";
 import CustomerDialog from "./CustomerDialog";
 import QuickNotes from "./QuickNotes";
 import BeforeAfterGallery from "./BeforeAfterGallery";
+import ComparisonManager from "./ComparisonManager";
 
 const Home = () => {
   const [gender, setGender] = useState<Gender>("Frau");
@@ -23,6 +25,7 @@ const Home = () => {
   const [discountPercent, setDiscountPercent] = useState<number>(0);
   const [selectedItems, setSelectedItems] = useState<SELECTED_TYPE[]>([]);
   const [sessionNotes, setSessionNotes] = useState<string[]>([]);
+  const [comparisons, setComparisons] = useState<COMPARISON_ITEM[]>([]);
 
   const updatePricing = (
     selectedItems: SELECTED_TYPE[],
@@ -124,81 +127,138 @@ const Home = () => {
 
   const { subtotal, total } = calculateTotal();
 
+  // Comparison handlers
+  const saveComparison = () => {
+    if (selectedItems.length === 0) return;
+
+    const newComparison: COMPARISON_ITEM = {
+      id: Date.now().toString(),
+      timestamp: Date.now(),
+      selectedItems: [...selectedItems],
+      subtotal,
+      total,
+      discountPercent,
+      label: `Variante ${comparisons.length + 1}`,
+    };
+    setComparisons([...comparisons, newComparison]);
+  };
+
+  const loadComparison = (comparison: COMPARISON_ITEM) => {
+    setSelectedItems(comparison.selectedItems);
+    setDiscountPercent(comparison.discountPercent);
+    // Update pricing type based on loaded items
+    const newPricingType =
+      comparison.selectedItems.length >= 5
+        ? "Area5"
+        : comparison.selectedItems.length >= 3
+        ? "Area3"
+        : "Area1";
+    setSelectedPricingType(newPricingType as PRICING_TYPE);
+  };
+
+  const deleteComparison = (id: string) => {
+    setComparisons(comparisons.filter((c) => c.id !== id));
+  };
+
+  const clearAllComparisons = () => {
+    setComparisons([]);
+  };
+
   return (
     <div className="w-full bg-gray-50 text-white overflow-hidden relative">
       <div className="h-[calc(100vh-280px)] md:h-[calc(100vh-250px)] overflow-auto">
         <Navbar />
-        <div className="flex justify-between flex-wrap gap-2 px-5 mb-4">
-          <div className=" flex gap-4 ">
-            {["Frau", "Mann"].map((g) => (
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+          {/* Control Bar */}
+          <div className="flex justify-between flex-wrap gap-4 mb-6">
+            {/* Gender Selector */}
+            <div className="flex gap-3">
+              {["Frau", "Mann"].map((g) => (
+                <button
+                  key={g}
+                  onClick={() => setGender(g as Gender)}
+                  className={`px-6 py-2.5 rounded-lg font-semibold min-h-[44px] transition-all duration-200 active:scale-95 ${
+                    gender === g
+                      ? "bg-main-color text-white shadow-lg ring-2 ring-main-color ring-offset-2"
+                      : "bg-white text-main-color border-2 border-main-color hover:bg-main-color/10 hover:shadow-md"
+                  }`}
+                >
+                  {g}
+                </button>
+              ))}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3 flex-wrap">
+              <ComparisonManager
+                selectedItems={selectedItems}
+                subtotal={subtotal}
+                total={total}
+                discountPercent={discountPercent}
+                comparisons={comparisons}
+                onSaveComparison={saveComparison}
+                onLoadComparison={loadComparison}
+                onDeleteComparison={deleteComparison}
+                onClearAllComparisons={clearAllComparisons}
+              />
+              <CustomerDialog
+                currentGender={gender}
+                selectedAreas={selectedItems.map((item) => ({
+                  name: item.treatment.name,
+                  price: item.price,
+                }))}
+                totalPrice={total}
+                onSave={(customer) => {
+                  console.log("Kunde gespeichert:", customer);
+                  alert(`Kunde ${customer.firstName} ${customer.lastName} wurde gespeichert!`);
+                }}
+              />
+              <QuickNotes
+                notes={sessionNotes}
+                onNotesChange={setSessionNotes}
+              />
+              <BeforeAfterGallery
+                selectedAreas={selectedItems.map((item) => item.treatment.name)}
+              />
               <button
-                key={g}
-                onClick={() => setGender(g as Gender)}
-                className={`px-6 py-2 rounded-md font-medium ${
-                  gender === g
-                    ? "bg-[#007A89] text-white"
-                    : "bg-gray-200 text-[#007A89]"
-                } hover:shadow-md`}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-red-500 text-sm text-white font-medium min-h-[44px] hover:bg-red-600 hover:shadow-md transition-all duration-200 active:scale-95"
+                onClick={() => {
+                  setSelectedItems([]);
+                  setDiscountPercent(0);
+                  setSessionNotes([]);
+                }}
               >
-                {g}
+                Zurücksetzen
+              </button>
+            </div>
+          </div>
+
+          {/* Treatment Type Tabs */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
+            {Object.keys(pricingData[gender]).map((treatmentType) => (
+              <button
+                key={treatmentType}
+                onClick={() => setSelectedTreatment(treatmentType)}
+                className={`px-4 py-3 min-h-[48px] border-2 rounded-lg font-medium transition-all duration-200 active:scale-95 ${
+                  selectedTreatment === treatmentType
+                    ? "bg-main-color text-white border-main-color shadow-lg scale-[1.02]"
+                    : "bg-white text-gray-700 border-gray-200 hover:border-main-color hover:shadow-md hover:bg-gray-50"
+                }`}
+              >
+                {treatmentType}
               </button>
             ))}
           </div>
-          <div className="flex gap-2 flex-wrap">
-            <CustomerDialog
-              currentGender={gender}
-              selectedAreas={selectedItems.map((item) => ({
-                name: item.treatment.name,
-                price: item.price,
-              }))}
-              totalPrice={total}
-              onSave={(customer) => {
-                console.log("Kunde gespeichert:", customer);
-                alert(`Kunde ${customer.firstName} ${customer.lastName} wurde gespeichert!`);
-              }}
-            />
-            <QuickNotes
-              notes={sessionNotes}
-              onNotesChange={setSessionNotes}
-            />
-            <BeforeAfterGallery
-              selectedAreas={selectedItems.map((item) => item.treatment.name)}
-            />
-            <button
-              className="flex items-center gap-2 px-4 py-2 rounded-md border border-solid bg-red-600 text-sm text-white hover:bg-red-500"
-              onClick={() => {
-                setSelectedItems([]);
-                setDiscountPercent(0);
-                setSessionNotes([]);
-              }}
-            >
-              Zurücksetzen
-            </button>
-          </div>
-        </div>
-        {/* <div className="flex  "> */}
-        <div className="flex flex-row  px-5 align-middle items-center gap-4 mb-6 flex-wrap">
-          {Object.keys(pricingData[gender]).map((treatmentType) => (
-            <button
-              key={treatmentType}
-              onClick={() => setSelectedTreatment(treatmentType)}
-              className={`px-4 py-2 border border-solid shadow-md hover:shadow-lg transition-shadow rounded-md ${
-                selectedTreatment === treatmentType
-                  ? "bg-main-color text-white border-main-color"
-                  : "bg-gray-50 text-secondary-color border-gray-300 hover:bg-gray-100"
-              }`}
-            >
-              {treatmentType}
-            </button>
-          ))}
         </div>
 
-        <PricingTable
-          selectedGender={gender}
-          selectedTreatment={selectedTreatment}
-          selectedItems={selectedItems}
-          addItemToCart={addItemToCart}
-        />
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+          <PricingTable
+            selectedGender={gender}
+            selectedTreatment={selectedTreatment}
+            selectedItems={selectedItems}
+            addItemToCart={addItemToCart}
+          />
+        </div>
       </div>
       {/* Payment Section */}
       <Footer
