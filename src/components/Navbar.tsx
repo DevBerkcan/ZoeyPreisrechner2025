@@ -13,9 +13,9 @@ const Navbar = () => {
         <Image
           src="/assets/Nazar-Logo.png"
           alt="Logo"
-          width={180}
-          height={120}
-          className="object-contain max-h-9 w-auto opacity-80"
+          width={240}
+          height={160}
+          className="object-contain max-h-12 w-auto opacity-80"
         />
       </div>
 
