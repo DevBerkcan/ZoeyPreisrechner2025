@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <div className="mb-1 flex items-center gap-1 w-full px-2 py-0.5 bg-white shadow-md">
       {/* Logo Section */}
-      <div className="flex grow justify-center">
+      <div className="flex items-center mr-auto">
         <Image
           src="/assets/Nazar-Logo.png"
           alt="Logo"
