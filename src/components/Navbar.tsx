@@ -20,13 +20,13 @@ const Navbar = () => {
       </div>
 
       {/* Action Buttons Section */}
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-row md:flex-col gap-2 flex-wrap">
         <Link
           href="/admin/customers"
-          className="flex items-center gap-2 px-4 py-1 rounded-md border border-solid border-main-color text-sm text-main-color hover:bg-gray-100"
+          className="flex items-center gap-1 md:gap-2 px-2 md:px-4 py-1 rounded-md border border-solid border-main-color text-xs md:text-sm text-main-color hover:bg-gray-100 transition-colors"
         >
-          <Users size={18} />
-          Kunden
+          <Users size={16} className="md:w-[18px] md:h-[18px]" />
+          <span className="hidden sm:inline">Kunden</span>
         </Link>
         <ChangePassword />
         <SignoutButton />

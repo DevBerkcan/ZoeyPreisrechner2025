@@ -182,11 +182,11 @@ const Home = () => {
             <button
               key={treatmentType}
               onClick={() => setSelectedTreatment(treatmentType)}
-              className={`px-4 py-2 border border-solid border-gray-300 bg-blue-500 shadow-md hover:shadow-lg transition-shadow ${
+              className={`px-4 py-2 border border-solid shadow-md hover:shadow-lg transition-shadow rounded-md ${
                 selectedTreatment === treatmentType
-                  ? "bg-secondary-color text-white"
-                  : "bg-gray-50 text-secondary-color"
-              } rounded-md`}
+                  ? "bg-main-color text-white border-main-color"
+                  : "bg-gray-50 text-secondary-color border-gray-300 hover:bg-gray-100"
+              }`}
             >
               {treatmentType}
             </button>

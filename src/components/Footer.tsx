@@ -87,7 +87,7 @@ const Footer = ({
     ? (100 * (singleItemsPricingValue - subtotal)) / singleItemsPricingValue
     : 0;
   return (
-    <div className="fixed bottom-0 left-0 right-0 mt-6 border-t-2  text-main-color mb-2 border-t-main-color px-4 pt-2">
+    <div className="fixed bottom-0 left-0 right-0 mt-6 border-t-2 text-main-color mb-2 border-t-main-color px-4 pt-4 bg-white shadow-lg">
       <div className="space-y-2">
         {/* {selectedItems.map((item, index) => (
           <div key={index} className="flex justify-between items-center">
@@ -167,9 +167,9 @@ const Footer = ({
         </div>
 
         {/* Gesamtpreis nach Rabatt */}
-        <div className="flex justify-between font-bold">
+        <div className="flex justify-between items-center font-bold text-lg border-t border-gray-200 pt-2 mt-2">
           <p>Gesamt:</p>
-          <p>{total.toFixed(2)}€</p>
+          <p className="text-xl">{total.toFixed(2)}€</p>
         </div>
 
         {/* Du sparst - Highlight Box */}
@@ -205,7 +205,7 @@ const Footer = ({
         <div className="mt-4 text-center">
           <Link
             href="https://credit4beauty.de/"
-            className="px-4 py-2 rounded-md bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-all"
+            className="px-4 py-2 rounded-md bg-secondary-color text-white font-semibold hover:opacity-90 transition-all"
           >
             Jetzt finanzieren
           </Link>
