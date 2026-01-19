@@ -11,9 +11,9 @@ export default {
     extend: {
       colors: {
         beige: {
-          translucent: "rgba(245, 245, 220, 0.9)", // Light beige with transparency
-          light: "#FAF3E0", // Lighter beige
-          dark: "#F5E6CC", // Darker beige
+          translucent: "rgba(212, 165, 116, 0.15)", // Leichter Beige-Schimmer
+          light: "#F5E6D3", // Helles Beige für Hintergründe
+          dark: "#C4956B", // Dunkleres Beige für Akzente
         },
         brown: "#6B4226", // Main brown for text
         "dark-brown": "#4A3220",
@@ -22,8 +22,8 @@ export default {
         "light-beige": "#F7E9D8",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        "main-color": "#007A89",
-        "secondary-color": "#FAA003",
+        "main-color": "#059669", // Emerald Green (natürlich, beruhigend)
+        "secondary-color": "#D4A574", // Warm Beige (elegant, natürlich)
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",

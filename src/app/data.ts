@@ -244,194 +244,6 @@ export const pricingData: GenderPricingData = {
         },
       ],
     },
-    Plasmabehandlung: {
-      "Kopf | Einzelbehandlung": [
-        {
-          id: 27,
-          name: "Halsfältchen (pro Falte)",
-          pricing: {
-            "ab 5 Areale": 60,
-            "ab 3 Areale": 80,
-            "Einzelpreis pro Behandlung": 100,
-          },
-        },
-        {
-          id: 28,
-          name: "Kinnfalte",
-          pricing: {
-            "ab 5 Areale": 90,
-            "ab 3 Areale": 110,
-            "Einzelpreis pro Behandlung": 130,
-          },
-        },
-        {
-          id: 29,
-          name: "Krähenfüße",
-          pricing: {
-            "ab 5 Areale": 110,
-            "ab 3 Areale": 130,
-            "Einzelpreis pro Behandlung": 150,
-          },
-        },
-        {
-          id: 30,
-          name: "Mundfältchen",
-          pricing: {
-            "ab 5 Areale": 210,
-            "ab 3 Areale": 230,
-            "Einzelpreis pro Behandlung": 250,
-          },
-        },
-        {
-          id: 31,
-          name: "Nasolabialfalte",
-          pricing: {
-            "ab 5 Areale": 160,
-            "ab 3 Areale": 180,
-            "Einzelpreis pro Behandlung": 200,
-          },
-        },
-        {
-          id: 32,
-          name: "Oberlidstraffung",
-          pricing: {
-            "ab 5 Areale": 210,
-            "ab 3 Areale": 230,
-            "Einzelpreis pro Behandlung": 250,
-          },
-        },
-        {
-          id: 33,
-          name: "Stirnfalten",
-          pricing: {
-            "ab 5 Areale": 140,
-            "ab 3 Areale": 160,
-            "Einzelpreis pro Behandlung": 180,
-          },
-        },
-        {
-          id: 34,
-          name: "Unterlidstraffung",
-          pricing: {
-            "ab 5 Areale": 140,
-            "ab 3 Areale": 160,
-            "Einzelpreis pro Behandlung": 180,
-          },
-        },
-        {
-          id: 35,
-          name: "Zornesfalte",
-          pricing: {
-            "ab 5 Areale": 60,
-            "ab 3 Areale": 80,
-            "Einzelpreis pro Behandlung": 100,
-          },
-        },
-      ],
-      "Kopf | 3er Paket": [
-        {
-          id: 36,
-          name: "Halsfältchen (pro Falte)",
-          pricing: {
-            "ab 5 Areale": 0,
-            "ab 3 Areale": 0,
-            "Einzelpreis pro Behandlung": 249,
-          },
-        },
-        {
-          id: 37,
-          name: "Kinnfalte",
-          pricing: {
-            "ab 5 Areale": 0,
-            "ab 3 Areale": 0,
-            "Einzelpreis pro Behandlung": 339,
-          },
-        },
-        {
-          id: 38,
-          name: "Krähenfüße",
-          pricing: {
-            "ab 5 Areale": 0,
-            "ab 3 Areale": 0,
-            "Einzelpreis pro Behandlung": 399,
-          },
-        },
-        {
-          id: 39,
-          name: "Mundfältchen",
-          pricing: {
-            "ab 5 Areale": 0,
-            "ab 3 Areale": 0,
-            "Einzelpreis pro Behandlung": 699,
-          },
-        },
-        {
-          id: 40,
-          name: "Nasolabialfalte",
-          pricing: {
-            "ab 5 Areale": 0,
-            "ab 3 Areale": 0,
-            "Einzelpreis pro Behandlung": 549,
-          },
-        },
-        {
-          id: 41,
-          name: "Oberlidstraffung",
-          pricing: {
-            "ab 5 Areale": 0,
-            "ab 3 Areale": 0,
-            "Einzelpreis pro Behandlung": 699,
-          },
-        },
-        {
-          id: 42,
-          name: "Stirnfalten",
-          pricing: {
-            "ab 5 Areale": 0,
-            "ab 3 Areale": 0,
-            "Einzelpreis pro Behandlung": 489,
-          },
-        },
-        {
-          id: 43,
-          name: "Unterlidstraffung",
-          pricing: {
-            "ab 5 Areale": 0,
-            "ab 3 Areale": 0,
-            "Einzelpreis pro Behandlung": 489,
-          },
-        },
-        {
-          id: 44,
-          name: "Zornesfalte",
-          pricing: {
-            "ab 5 Areale": 0,
-            "ab 3 Areale": 0,
-            "Einzelpreis pro Behandlung": 249,
-          },
-        },
-      ],
-      Sonstige: [
-        {
-          id: 45,
-          name: "Fibroma/Milia(per piece)",
-          pricing: {
-            "ab 5 Areale": 10,
-            "ab 3 Areale": 10,
-            "Einzelpreis pro Behandlung": 10,
-          },
-        },
-        {
-          id: 46,
-          name: "Narbe (je 2cm)",
-          pricing: {
-            "ab 5 Areale": 50,
-            "ab 3 Areale": 50,
-            "Einzelpreis pro Behandlung": 50,
-          },
-        },
-      ],
-    },
     Endermologie: {
       "Endomassage/Ultraschall": [
         {
@@ -905,219 +717,6 @@ export const pricingData: GenderPricingData = {
         },
       ],
     },
-    LaserMe: {
-      Einzelbehandlung: [
-        {
-          id: 108,
-          name: "Gesicht",
-          pricing: {
-            "Einzelpreis pro Behandlung": 399,
-          },
-        },
-        {
-          id: 109,
-          name: "Wangenpartie beidseitig",
-          pricing: {
-            "Einzelpreis pro Behandlung": 169,
-          },
-        },
-        {
-          id: 110,
-          name: "Oberlieder beidseitig",
-          pricing: {
-            "Einzelpreis pro Behandlung": 60,
-          },
-        },
-        {
-          id: 111,
-          name: "Nase",
-          pricing: {
-            "Einzelpreis pro Behandlung": 60,
-          },
-        },
-        {
-          id: 112,
-          name: "Stirn",
-          pricing: {
-            "Einzelpreis pro Behandlung": 80,
-          },
-        },
-        {
-          id: 113,
-          name: "Kinn",
-          pricing: {
-            "Einzelpreis pro Behandlung": 60,
-          },
-        },
-        {
-          id: 114,
-          name: "Mundbereich jeweils Ober und Unterlippe jeweils",
-          pricing: {
-            "Einzelpreis pro Behandlung": 60,
-          },
-        },
-        {
-          id: 115,
-          name: "Hals",
-          pricing: {
-            "Einzelpreis pro Behandlung": 399,
-          },
-        },
-        {
-          id: 116,
-          name: "Dekollete",
-          pricing: {
-            "Einzelpreis pro Behandlung": 450,
-          },
-        },
-        {
-          id: 117,
-          name: "Pigmentflecken Hand beidseitig",
-          pricing: {
-            "Einzelpreis pro Behandlung": 169,
-          },
-        },
-        {
-          id: 118,
-          name: "Pigmentflecken Gesicht Durchmesser 4x4cm pro Behandlung",
-          pricing: {
-            "Einzelpreis pro Behandlung": 69,
-          },
-        },
-        {
-          id: 119,
-          name: "Krähenfüße beidseitig",
-          pricing: {
-            "Einzelpreis pro Behandlung": 99,
-          },
-        },
-        {
-          id: 120,
-          name: "SS Narben pro 4x4 cm",
-          pricing: {
-            "Einzelpreis pro Behandlung": 59,
-          },
-        },
-      ],
-      "3er Paket": [
-        {
-          id: 121,
-          name: "Gesicht",
-          pricing: {
-            "Einzelpreis pro Behandlung": 1113,
-          },
-        },
-        {
-          id: 122,
-          name: "Wangenpartie beidseitig",
-          pricing: {
-            "Einzelpreis pro Behandlung": 449,
-          },
-        },
-        {
-          id: 123,
-          name: "Oberlieder beidseitig",
-          pricing: {
-            "Einzelpreis pro Behandlung": 169,
-          },
-        },
-        {
-          id: 124,
-          name: "Nase",
-          pricing: {
-            "Einzelpreis pro Behandlung": 169,
-          },
-        },
-        {
-          id: 125,
-          name: "Stirn",
-          pricing: {
-            "Einzelpreis pro Behandlung": 220,
-          },
-        },
-        {
-          id: 126,
-          name: "Kinn",
-          pricing: {
-            "Einzelpreis pro Behandlung": 169,
-          },
-        },
-        {
-          id: 127,
-          name: "Mundbereich jeweils Ober und Unterlippe jeweils",
-          pricing: {
-            "Einzelpreis pro Behandlung": 169,
-          },
-        },
-        {
-          id: 128,
-          name: "Hals",
-          pricing: {
-            "Einzelpreis pro Behandlung": 1110,
-          },
-        },
-        {
-          id: 129,
-          name: "Dekollete",
-          pricing: {
-            "Einzelpreis pro Behandlung": 449,
-          },
-        },
-        {
-          id: 130,
-          name: "Pigmentflecken Hand beidseitig",
-          pricing: {
-            "Einzelpreis pro Behandlung": 449,
-          },
-        },
-        {
-          id: 131,
-          name: "Pigmentflecken Gesicht Durchmesser 4x4cm pro Behandlung",
-          pricing: {
-            "Einzelpreis pro Behandlung": 180,
-          },
-        },
-        {
-          id: 132,
-          name: "Krähenfüße beidseitig",
-          pricing: {
-            "Einzelpreis pro Behandlung": 280,
-          },
-        },
-        {
-          id: 133,
-          name: "SS Narben pro 4x4 cm",
-          pricing: {
-            "Einzelpreis pro Behandlung": 169,
-          },
-        },
-      ],
-    },
-    Courses: {
-      Course: [
-        {
-          id: 134,
-          name: "Basics of the skin",
-          pricing: {
-            Kurspreis: 1500,
-          },
-        },
-        {
-          id: 135,
-          name: "Optical radiation",
-          pricing: {
-            Kurspreis: 2500,
-          },
-        },
-        {
-          id: 136,
-          name: "EMS for radio frequency",
-          pricing: {
-            Kurspreis: 990,
-          },
-        },
-      ],
-    },
     Augen: {
       "Wimpern Lifting": [
         {
@@ -1166,6 +765,368 @@ export const pricingData: GenderPricingData = {
           name: "Manuelle Reinigung",
           pricing: {
             "Einzelpreis pro Behandlung": 50,
+          },
+        },
+      ],
+    },
+    Hyaluron: {
+      Gesichtsbehandlung: [
+        {
+          id: 500,
+          name: "Jawline",
+          pricing: {
+            "Einzelpreis pro Behandlung": 249,
+          },
+        },
+        {
+          id: 501,
+          name: "Kinn-Aufbau",
+          pricing: {
+            "Einzelpreis pro Behandlung": 249,
+          },
+        },
+        {
+          id: 502,
+          name: "Lippenfalten",
+          pricing: {
+            "Einzelpreis pro Behandlung": 249,
+          },
+        },
+        {
+          id: 503,
+          name: "Lippenunterspritzung",
+          pricing: {
+            "Einzelpreis pro Behandlung": 249,
+          },
+        },
+        {
+          id: 504,
+          name: "Marionettenfalte",
+          pricing: {
+            "Einzelpreis pro Behandlung": 249,
+          },
+        },
+        {
+          id: 505,
+          name: "Wangenaufbau",
+          pricing: {
+            "Einzelpreis pro Behandlung": 249,
+          },
+        },
+        {
+          id: 506,
+          name: "Nasolabialfalte",
+          pricing: {
+            "Einzelpreis pro Behandlung": 249,
+          },
+        },
+      ],
+      Korrekturen: [
+        {
+          id: 507,
+          name: "Hylase (Auflösung)",
+          pricing: {
+            "Einzelpreis pro Behandlung": 150,
+          },
+        },
+      ],
+    },
+    Mesotherapie: {
+      Behandlungen: [
+        {
+          id: 510,
+          name: "Mesotherapie Gesicht",
+          pricing: {
+            "Einzelpreis pro Behandlung": 199,
+          },
+        },
+        {
+          id: 511,
+          name: "Skinbooster",
+          pricing: {
+            "Einzelpreis pro Behandlung": 199,
+          },
+        },
+        {
+          id: 512,
+          name: "Profhilo",
+          pricing: {
+            "Einzelpreis pro Behandlung": 349,
+          },
+        },
+      ],
+    },
+    Fettwegspritze: {
+      Behandlungen: [
+        {
+          id: 515,
+          name: "Fettwegspritze (pro Zone)",
+          pricing: {
+            "Einzelpreis pro Behandlung": 200,
+          },
+        },
+      ],
+    },
+    PRP_Therapie: {
+      Behandlungen: [
+        {
+          id: 520,
+          name: "PRP bei Haarausfall / Eigenbluttherapie",
+          pricing: {
+            "Einzelpreis pro Behandlung": 450,
+          },
+        },
+        {
+          id: 521,
+          name: "Vampire Lifting / PRP inkl. Maske 60 Min",
+          pricing: {
+            "Einzelpreis pro Behandlung": 450,
+          },
+        },
+      ],
+    },
+    Infusionstherapie: {
+      Behandlungen: [
+        {
+          id: 525,
+          name: "Infusionstherapie",
+          pricing: {
+            "Einzelpreis pro Behandlung": 129,
+          },
+        },
+      ],
+    },
+    RF_Microneedling_Pro: {
+      Behandlungen: [
+        {
+          id: 530,
+          name: "Gesicht",
+          pricing: {
+            "Einzelpreis pro Behandlung": 299,
+          },
+        },
+        {
+          id: 531,
+          name: "Gesicht, Hals, Dekolleté",
+          pricing: {
+            "Einzelpreis pro Behandlung": 399,
+          },
+        },
+      ],
+    },
+    BioPeel: {
+      Behandlungen: [
+        {
+          id: 535,
+          name: "BioPeelX Gesicht inkl. Maske 60 Min",
+          pricing: {
+            "Einzelpreis pro Behandlung": 170,
+          },
+        },
+      ],
+    },
+    HydraFacial: {
+      Behandlungen: [
+        {
+          id: 540,
+          name: "Basic",
+          pricing: {
+            "Einzelpreis pro Behandlung": 189,
+          },
+        },
+        {
+          id: 541,
+          name: "MD",
+          pricing: {
+            "Einzelpreis pro Behandlung": 199,
+          },
+        },
+        {
+          id: 542,
+          name: "Deluxe",
+          pricing: {
+            "Einzelpreis pro Behandlung": 229,
+          },
+        },
+      ],
+    },
+    Microneedling: {
+      Einzelbehandlung: [
+        {
+          id: 310,
+          name: "Gesicht",
+          pricing: {
+            "ab 5 Areale": 99,
+            "ab 3 Areale": 119,
+            "Einzelpreis pro Behandlung": 139,
+          },
+        },
+        {
+          id: 311,
+          name: "Hals",
+          pricing: {
+            "ab 5 Areale": 69,
+            "ab 3 Areale": 79,
+            "Einzelpreis pro Behandlung": 89,
+          },
+        },
+        {
+          id: 312,
+          name: "Dekolleté",
+          pricing: {
+            "ab 5 Areale": 79,
+            "ab 3 Areale": 89,
+            "Einzelpreis pro Behandlung": 99,
+          },
+        },
+        {
+          id: 313,
+          name: "Hände",
+          pricing: {
+            "ab 5 Areale": 59,
+            "ab 3 Areale": 69,
+            "Einzelpreis pro Behandlung": 79,
+          },
+        },
+        {
+          id: 314,
+          name: "Narbenbehandlung (10x10cm)",
+          pricing: {
+            "Einzelpreis pro Behandlung": 119,
+          },
+        },
+        {
+          id: 315,
+          name: "Aknenarben Gesicht",
+          pricing: {
+            "Einzelpreis pro Behandlung": 159,
+          },
+        },
+      ],
+      "3er Paket": [
+        {
+          id: 316,
+          name: "Gesicht",
+          pricing: {
+            "Einzelpreis pro Behandlung": 359,
+          },
+        },
+        {
+          id: 317,
+          name: "Gesicht + Hals",
+          pricing: {
+            "Einzelpreis pro Behandlung": 499,
+          },
+        },
+        {
+          id: 318,
+          name: "Gesicht + Hals + Dekolleté",
+          pricing: {
+            "Einzelpreis pro Behandlung": 649,
+          },
+        },
+      ],
+    },
+    Hautstraffung: {
+      "Radiofrequenz (RF)": [
+        {
+          id: 320,
+          name: "Gesicht",
+          pricing: {
+            "ab 5 Areale": 129,
+            "ab 3 Areale": 149,
+            "Einzelpreis pro Behandlung": 179,
+          },
+        },
+        {
+          id: 321,
+          name: "Hals",
+          pricing: {
+            "ab 5 Areale": 89,
+            "ab 3 Areale": 99,
+            "Einzelpreis pro Behandlung": 119,
+          },
+        },
+        {
+          id: 322,
+          name: "Dekolleté",
+          pricing: {
+            "ab 5 Areale": 99,
+            "ab 3 Areale": 119,
+            "Einzelpreis pro Behandlung": 139,
+          },
+        },
+        {
+          id: 323,
+          name: "Bauch",
+          pricing: {
+            "ab 5 Areale": 149,
+            "ab 3 Areale": 169,
+            "Einzelpreis pro Behandlung": 199,
+          },
+        },
+        {
+          id: 324,
+          name: "Oberarme",
+          pricing: {
+            "ab 5 Areale": 99,
+            "ab 3 Areale": 119,
+            "Einzelpreis pro Behandlung": 139,
+          },
+        },
+        {
+          id: 325,
+          name: "Oberschenkel",
+          pricing: {
+            "ab 5 Areale": 149,
+            "ab 3 Areale": 179,
+            "Einzelpreis pro Behandlung": 219,
+          },
+        },
+      ],
+      "HIFU (High Intensity Focused Ultrasound)": [
+        {
+          id: 326,
+          name: "Gesicht komplett",
+          pricing: {
+            "Einzelpreis pro Behandlung": 599,
+          },
+        },
+        {
+          id: 327,
+          name: "Doppelkinn",
+          pricing: {
+            "Einzelpreis pro Behandlung": 349,
+          },
+        },
+        {
+          id: 328,
+          name: "Wangenstraffung",
+          pricing: {
+            "Einzelpreis pro Behandlung": 449,
+          },
+        },
+        {
+          id: 329,
+          name: "Hals + Kinn",
+          pricing: {
+            "Einzelpreis pro Behandlung": 499,
+          },
+        },
+      ],
+      Pakete: [
+        {
+          id: 330,
+          name: "Anti-Aging Komplett (RF 5x)",
+          pricing: {
+            "Einzelpreis pro Behandlung": 699,
+          },
+        },
+        {
+          id: 331,
+          name: "Body Contouring (3 Zonen)",
+          pricing: {
+            "Einzelpreis pro Behandlung": 449,
           },
         },
       ],
@@ -2333,6 +2294,359 @@ export const pricingData: GenderPricingData = {
           name: "Manuelle Reinigung",
           pricing: {
             "Einzelpreis pro Behandlung": 50,
+          },
+        },
+      ],
+    },
+    Hyaluron: {
+      Gesichtsbehandlung: [
+        {
+          id: 600,
+          name: "Jawline",
+          pricing: {
+            "Einzelpreis pro Behandlung": 249,
+          },
+        },
+        {
+          id: 601,
+          name: "Kinn-Aufbau",
+          pricing: {
+            "Einzelpreis pro Behandlung": 249,
+          },
+        },
+        {
+          id: 602,
+          name: "Lippenfalten",
+          pricing: {
+            "Einzelpreis pro Behandlung": 249,
+          },
+        },
+        {
+          id: 603,
+          name: "Lippenunterspritzung",
+          pricing: {
+            "Einzelpreis pro Behandlung": 249,
+          },
+        },
+        {
+          id: 604,
+          name: "Marionettenfalte",
+          pricing: {
+            "Einzelpreis pro Behandlung": 249,
+          },
+        },
+        {
+          id: 605,
+          name: "Wangenaufbau",
+          pricing: {
+            "Einzelpreis pro Behandlung": 249,
+          },
+        },
+        {
+          id: 606,
+          name: "Nasolabialfalte",
+          pricing: {
+            "Einzelpreis pro Behandlung": 249,
+          },
+        },
+      ],
+      Korrekturen: [
+        {
+          id: 607,
+          name: "Hylase (Auflösung)",
+          pricing: {
+            "Einzelpreis pro Behandlung": 150,
+          },
+        },
+      ],
+    },
+    Mesotherapie: {
+      Behandlungen: [
+        {
+          id: 610,
+          name: "Mesotherapie Gesicht",
+          pricing: {
+            "Einzelpreis pro Behandlung": 199,
+          },
+        },
+        {
+          id: 611,
+          name: "Skinbooster",
+          pricing: {
+            "Einzelpreis pro Behandlung": 199,
+          },
+        },
+        {
+          id: 612,
+          name: "Profhilo",
+          pricing: {
+            "Einzelpreis pro Behandlung": 349,
+          },
+        },
+      ],
+    },
+    Fettwegspritze: {
+      Behandlungen: [
+        {
+          id: 615,
+          name: "Fettwegspritze (pro Zone)",
+          pricing: {
+            "Einzelpreis pro Behandlung": 200,
+          },
+        },
+      ],
+    },
+    PRP_Therapie: {
+      Behandlungen: [
+        {
+          id: 620,
+          name: "PRP bei Haarausfall / Eigenbluttherapie",
+          pricing: {
+            "Einzelpreis pro Behandlung": 450,
+          },
+        },
+        {
+          id: 621,
+          name: "Vampire Lifting / PRP inkl. Maske 60 Min",
+          pricing: {
+            "Einzelpreis pro Behandlung": 450,
+          },
+        },
+      ],
+    },
+    Infusionstherapie: {
+      Behandlungen: [
+        {
+          id: 625,
+          name: "Infusionstherapie",
+          pricing: {
+            "Einzelpreis pro Behandlung": 129,
+          },
+        },
+      ],
+    },
+    RF_Microneedling_Pro: {
+      Behandlungen: [
+        {
+          id: 630,
+          name: "Gesicht",
+          pricing: {
+            "Einzelpreis pro Behandlung": 299,
+          },
+        },
+        {
+          id: 631,
+          name: "Gesicht, Hals, Dekolleté",
+          pricing: {
+            "Einzelpreis pro Behandlung": 399,
+          },
+        },
+      ],
+    },
+    BioPeel: {
+      Behandlungen: [
+        {
+          id: 635,
+          name: "BioPeelX Gesicht inkl. Maske 60 Min",
+          pricing: {
+            "Einzelpreis pro Behandlung": 170,
+          },
+        },
+      ],
+    },
+    HydraFacial: {
+      Behandlungen: [
+        {
+          id: 640,
+          name: "Basic",
+          pricing: {
+            "Einzelpreis pro Behandlung": 189,
+          },
+        },
+        {
+          id: 641,
+          name: "MD",
+          pricing: {
+            "Einzelpreis pro Behandlung": 199,
+          },
+        },
+        {
+          id: 642,
+          name: "Deluxe",
+          pricing: {
+            "Einzelpreis pro Behandlung": 229,
+          },
+        },
+      ],
+    },
+    Microneedling: {
+      Einzelbehandlung: [
+        {
+          id: 650,
+          name: "Gesicht",
+          pricing: {
+            "ab 5 Areale": 109,
+            "ab 3 Areale": 129,
+            "Einzelpreis pro Behandlung": 149,
+          },
+        },
+        {
+          id: 651,
+          name: "Hals",
+          pricing: {
+            "ab 5 Areale": 79,
+            "ab 3 Areale": 89,
+            "Einzelpreis pro Behandlung": 99,
+          },
+        },
+        {
+          id: 652,
+          name: "Dekolleté",
+          pricing: {
+            "ab 5 Areale": 89,
+            "ab 3 Areale": 99,
+            "Einzelpreis pro Behandlung": 109,
+          },
+        },
+        {
+          id: 653,
+          name: "Narbenbehandlung (10x10cm)",
+          pricing: {
+            "Einzelpreis pro Behandlung": 129,
+          },
+        },
+        {
+          id: 654,
+          name: "Aknenarben Gesicht",
+          pricing: {
+            "Einzelpreis pro Behandlung": 169,
+          },
+        },
+      ],
+      "3er Paket": [
+        {
+          id: 655,
+          name: "Gesicht",
+          pricing: {
+            "Einzelpreis pro Behandlung": 389,
+          },
+        },
+        {
+          id: 656,
+          name: "Gesicht + Hals",
+          pricing: {
+            "Einzelpreis pro Behandlung": 549,
+          },
+        },
+        {
+          id: 657,
+          name: "Gesicht + Hals + Dekolleté",
+          pricing: {
+            "Einzelpreis pro Behandlung": 699,
+          },
+        },
+      ],
+    },
+    Hautstraffung: {
+      "Radiofrequenz (RF)": [
+        {
+          id: 420,
+          name: "Gesicht",
+          pricing: {
+            "ab 5 Areale": 139,
+            "ab 3 Areale": 159,
+            "Einzelpreis pro Behandlung": 189,
+          },
+        },
+        {
+          id: 421,
+          name: "Hals",
+          pricing: {
+            "ab 5 Areale": 99,
+            "ab 3 Areale": 109,
+            "Einzelpreis pro Behandlung": 129,
+          },
+        },
+        {
+          id: 422,
+          name: "Dekolleté",
+          pricing: {
+            "ab 5 Areale": 109,
+            "ab 3 Areale": 129,
+            "Einzelpreis pro Behandlung": 149,
+          },
+        },
+        {
+          id: 423,
+          name: "Bauch",
+          pricing: {
+            "ab 5 Areale": 159,
+            "ab 3 Areale": 179,
+            "Einzelpreis pro Behandlung": 209,
+          },
+        },
+        {
+          id: 424,
+          name: "Oberarme",
+          pricing: {
+            "ab 5 Areale": 109,
+            "ab 3 Areale": 129,
+            "Einzelpreis pro Behandlung": 149,
+          },
+        },
+        {
+          id: 425,
+          name: "Oberschenkel",
+          pricing: {
+            "ab 5 Areale": 159,
+            "ab 3 Areale": 189,
+            "Einzelpreis pro Behandlung": 229,
+          },
+        },
+      ],
+      "HIFU (High Intensity Focused Ultrasound)": [
+        {
+          id: 426,
+          name: "Gesicht komplett",
+          pricing: {
+            "Einzelpreis pro Behandlung": 649,
+          },
+        },
+        {
+          id: 427,
+          name: "Doppelkinn",
+          pricing: {
+            "Einzelpreis pro Behandlung": 379,
+          },
+        },
+        {
+          id: 428,
+          name: "Wangenstraffung",
+          pricing: {
+            "Einzelpreis pro Behandlung": 479,
+          },
+        },
+        {
+          id: 429,
+          name: "Hals + Kinn",
+          pricing: {
+            "Einzelpreis pro Behandlung": 549,
+          },
+        },
+      ],
+      Pakete: [
+        {
+          id: 430,
+          name: "Anti-Aging Komplett (RF 5x)",
+          pricing: {
+            "Einzelpreis pro Behandlung": 749,
+          },
+        },
+        {
+          id: 431,
+          name: "Body Contouring (3 Zonen)",
+          pricing: {
+            "Einzelpreis pro Behandlung": 479,
           },
         },
       ],
