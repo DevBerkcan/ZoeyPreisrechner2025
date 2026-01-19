@@ -7,7 +7,7 @@ import { Users } from "lucide-react";
 
 const Navbar = () => {
   return (
-    <div className=" mb-4 flex items-center gap-2 w-full px-4 py-2 bg-white shadow-md">
+    <div className=" mb-2 flex items-center gap-1 w-full px-2 py-1 bg-white shadow-md">
       {/* Logo Section */}
       <div className="flex-grow flex justify-center">
         <Image
@@ -20,10 +20,10 @@ const Navbar = () => {
       </div>
 
       {/* Action Buttons Section */}
-      <div className="flex flex-row md:flex-col gap-2 flex-wrap">
+      <div className="flex flex-row md:flex-col gap-1 flex-wrap">
         <Link
           href="/admin/customers"
-          className="flex items-center gap-1 md:gap-2 px-2 md:px-4 py-1 rounded-md border border-solid border-main-color text-xs md:text-sm text-main-color hover:bg-gray-100 transition-colors"
+          className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1 rounded-md border border-solid border-main-color text-xs md:text-sm text-main-color hover:bg-gray-100 transition-colors"
         >
           <Users size={16} className="md:w-[18px] md:h-[18px]" />
           <span className="hidden sm:inline">Kunden</span>
