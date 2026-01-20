@@ -13,15 +13,15 @@ const ChangePassword = () => {
   return (
     <Dialog>
       <DialogTrigger>
-        <div className="flex items-center gap-2 px-4 py-1 rounded-md border border-solid border-main-color text-sm text-main-color hover:bg-gray-100">
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-main-color text-sm text-main-color hover:bg-main-color/10 transition-colors">
           <Image
             src="/assets/pencil-line.png"
             alt="edit icon"
-            width={25}
-            height={27}
+            width={18}
+            height={18}
             className="object-contain"
           />
-          Passwort ändern
+          <span className="hidden sm:inline">Passwort</span>
         </div>
       </DialogTrigger>
       <DialogContent>

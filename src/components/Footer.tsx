@@ -175,7 +175,9 @@ const Footer = ({
 
             {/* Finance Button */}
             <Link
-              href="https://credit4beauty.de/"
+              href="https://beautyfinanzierung.de/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="block w-full text-center px-4 py-3 rounded-lg bg-secondary-color text-white font-semibold min-h-[44px] hover:bg-orange-500 hover:shadow-lg transition-all duration-200 active:scale-95"
             >
               Jetzt finanzieren

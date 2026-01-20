@@ -15,6 +15,7 @@ import CustomerDialog from "./CustomerDialog";
 import QuickNotes from "./QuickNotes";
 import BeforeAfterGallery from "./BeforeAfterGallery";
 import ComparisonManager from "./ComparisonManager";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 const Home = () => {
   const [gender, setGender] = useState<Gender>("Frau");
@@ -26,6 +27,10 @@ const Home = () => {
   const [selectedItems, setSelectedItems] = useState<SELECTED_TYPE[]>([]);
   const [sessionNotes, setSessionNotes] = useState<string[]>([]);
   const [comparisons, setComparisons] = useState<COMPARISON_ITEM[]>([]);
+  const [showAllTreatments, setShowAllTreatments] = useState<boolean>(false);
+
+  // Number of treatments to show initially
+  const INITIAL_TREATMENTS_COUNT = 4;
 
   const updatePricing = (
     selectedItems: SELECTED_TYPE[],
@@ -234,21 +239,54 @@ const Home = () => {
           </div>
 
           {/* Treatment Type Tabs */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
-            {Object.keys(pricingData[gender]).map((treatmentType) => (
-              <button
-                key={treatmentType}
-                onClick={() => setSelectedTreatment(treatmentType)}
-                className={`px-4 py-3 min-h-[48px] border-2 rounded-lg font-medium transition-all duration-200 active:scale-95 ${
-                  selectedTreatment === treatmentType
-                    ? "bg-main-color text-white border-main-color shadow-lg scale-[1.02]"
-                    : "bg-white text-gray-700 border-gray-200 hover:border-main-color hover:shadow-md hover:bg-gray-50"
-                }`}
-              >
-                {treatmentType}
-              </button>
-            ))}
-          </div>
+          {(() => {
+            const allTreatments = Object.keys(pricingData[gender]);
+            const visibleTreatments = showAllTreatments
+              ? allTreatments
+              : allTreatments.slice(0, INITIAL_TREATMENTS_COUNT);
+            const hasMoreTreatments = allTreatments.length > INITIAL_TREATMENTS_COUNT;
+            const hiddenCount = allTreatments.length - INITIAL_TREATMENTS_COUNT;
+
+            return (
+              <div className="mb-6">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+                  {visibleTreatments.map((treatmentType) => (
+                    <button
+                      key={treatmentType}
+                      onClick={() => setSelectedTreatment(treatmentType)}
+                      className={`px-4 py-3 min-h-[48px] border-2 rounded-lg font-medium transition-all duration-200 active:scale-95 ${
+                        selectedTreatment === treatmentType
+                          ? "bg-main-color text-white border-main-color shadow-lg scale-[1.02]"
+                          : "bg-white text-gray-700 border-gray-200 hover:border-main-color hover:shadow-md hover:bg-gray-50"
+                      }`}
+                    >
+                      {treatmentType.replace(/_/g, " ")}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Expand/Collapse Button */}
+                {hasMoreTreatments && (
+                  <button
+                    onClick={() => setShowAllTreatments(!showAllTreatments)}
+                    className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-main-color bg-main-color/5 hover:bg-main-color/10 rounded-lg transition-all duration-200"
+                  >
+                    {showAllTreatments ? (
+                      <>
+                        <span>Weniger anzeigen</span>
+                        <ChevronUp size={18} />
+                      </>
+                    ) : (
+                      <>
+                        <span>Weitere Behandlungen anzeigen ({hiddenCount})</span>
+                        <ChevronDown size={18} />
+                      </>
+                    )}
+                  </button>
+                )}
+              </div>
+            );
+          })()}
         </div>
 
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
