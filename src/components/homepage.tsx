@@ -15,19 +15,25 @@ import CustomerDialog from "./CustomerDialog";
 import QuickNotes from "./QuickNotes";
 import BeforeAfterGallery from "./BeforeAfterGallery";
 import ComparisonManager from "./ComparisonManager";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { PrintButton } from "./PrintButton";
 
 const Home = () => {
-  const [gender, setGender] = useState<Gender>("Frau");
-  const [selectedTreatment, setSelectedTreatment] =
-    useState<string>("Haarentfernung");
-  const [selectedPricingType, setSelectedPricingType] =
-    useState<PRICING_TYPE>("Area1");
-  const [discountPercent, setDiscountPercent] = useState<number>(0);
-  const [selectedItems, setSelectedItems] = useState<SELECTED_TYPE[]>([]);
-  const [sessionNotes, setSessionNotes] = useState<string[]>([]);
-  const [comparisons, setComparisons] = useState<COMPARISON_ITEM[]>([]);
+  // Persisted state (localStorage)
+  const [gender, setGender, genderLoaded] = useLocalStorage<Gender>("zoey-gender", "Frau");
+  const [discountPercent, setDiscountPercent, discountLoaded] = useLocalStorage<number>("zoey-discountPercent", 0);
+  const [selectedItems, setSelectedItems, itemsLoaded] = useLocalStorage<SELECTED_TYPE[]>("zoey-selectedItems", []);
+  const [sessionNotes, setSessionNotes, notesLoaded] = useLocalStorage<string[]>("zoey-sessionNotes", []);
+  const [comparisons, setComparisons, comparisonsLoaded] = useLocalStorage<COMPARISON_ITEM[]>("zoey-comparisons", []);
+
+  // Non-persisted state
+  const [selectedTreatment, setSelectedTreatment] = useState<string>("Haarentfernung");
+  const [selectedPricingType, setSelectedPricingType] = useState<PRICING_TYPE>("Area1");
   const [showAllTreatments, setShowAllTreatments] = useState<boolean>(false);
+
+  // Check if all localStorage data is loaded
+  const isLoaded = genderLoaded && discountLoaded && itemsLoaded && notesLoaded && comparisonsLoaded;
 
   // Number of treatments to show initially
   const INITIAL_TREATMENTS_COUNT = 4;
@@ -169,6 +175,25 @@ const Home = () => {
     setComparisons([]);
   };
 
+  const handleReset = () => {
+    setSelectedItems([]);
+    setDiscountPercent(0);
+    setSessionNotes([]);
+    setComparisons([]);
+  };
+
+  // Show loading state while localStorage is being loaded
+  if (!isLoaded) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center bg-gray-50">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="w-12 h-12 animate-spin text-main-color" />
+          <p className="text-gray-600">Laden...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full bg-gray-50 text-white overflow-hidden relative">
       <div className="h-[calc(100vh-280px)] md:h-[calc(100vh-250px)] overflow-auto">
@@ -225,13 +250,10 @@ const Home = () => {
               <BeforeAfterGallery
                 selectedAreas={selectedItems.map((item) => item.treatment.name)}
               />
+              <PrintButton />
               <button
-                className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-red-500 text-sm text-white font-medium min-h-[44px] hover:bg-red-600 hover:shadow-md transition-all duration-200 active:scale-95"
-                onClick={() => {
-                  setSelectedItems([]);
-                  setDiscountPercent(0);
-                  setSessionNotes([]);
-                }}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-red-500 text-sm text-white font-medium min-h-[44px] hover:bg-red-600 hover:shadow-md transition-all duration-200 active:scale-95 no-print"
+                onClick={handleReset}
               >
                 Zurücksetzen
               </button>

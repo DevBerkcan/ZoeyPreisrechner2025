@@ -88,7 +88,7 @@ const Footer = ({
   const [showDetails, setShowDetails] = useState(false);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white shadow-2xl border-t-2 border-main-color">
+    <div className="fixed bottom-0 left-0 right-0 bg-background shadow-2xl border-t-2 border-main-color dark:shadow-none">
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
         {/* Main Price Display - Grid Layout for iPad/Desktop */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">

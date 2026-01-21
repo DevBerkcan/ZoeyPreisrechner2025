@@ -70,3 +70,59 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Print Styles */
+@media print {
+  /* Hide non-essential elements */
+  .no-print,
+  nav,
+  button:not(.print-visible),
+  .fixed {
+    display: none !important;
+  }
+
+  /* Reset backgrounds for printing */
+  body {
+    background: white !important;
+    color: black !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Main content area */
+  .print-container {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Page setup */
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+
+  /* Treatment cards for print */
+  .print-treatment {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Ensure colors print */
+  .bg-main-color {
+    background-color: #059669 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Hide scrollbars */
+  * {
+    overflow: visible !important;
+  }
+
+  /* Force page breaks where needed */
+  .print-page-break {
+    page-break-before: always;
+  }
+}

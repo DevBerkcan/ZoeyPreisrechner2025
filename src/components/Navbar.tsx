@@ -4,10 +4,11 @@ import React from "react";
 import ChangePassword from "./changePassword";
 import SignoutButton from "./SignoutButton";
 import { Users } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle";
 
 const Navbar = () => {
   return (
-    <div className="w-full bg-white shadow-sm">
+    <div className="w-full bg-background shadow-sm dark:border-b dark:border-border">
       <div className="mx-auto flex items-center justify-between max-w-7xl px-4 md:px-6 lg:px-8 py-2">
         {/* Logo Section */}
         <div className="flex items-center">
@@ -23,6 +24,7 @@ const Navbar = () => {
 
         {/* Action Buttons Section - Always horizontal */}
         <div className="flex flex-row items-center gap-2">
+          <ThemeToggle />
           <Link
             href="/admin/customers"
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-main-color text-sm text-main-color hover:bg-main-color/10 transition-colors"
