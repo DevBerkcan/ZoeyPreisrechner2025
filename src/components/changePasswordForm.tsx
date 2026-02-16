@@ -39,7 +39,7 @@ const ChangePasswordForm = () => {
       <div className="flex flex-col gap-1">
         <label
           htmlFor="oldPassword"
-          className="text-sm font-medium text-gray-700"
+          className="text-sm font-medium text-gray-700 dark:text-gray-200"
         >
           Altes Passwort
         </label>
@@ -47,7 +47,7 @@ const ChangePasswordForm = () => {
           id="oldPassword"
           name="oldPassword"
           type="password"
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-main-color"
+          className="w-full px-4 py-2 border dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-main-color"
           placeholder="Geben Sie Ihr altes Passwort ein"
           value={oldPassword}
           onChange={(e) => setOldPassword(e.target.value)}
@@ -58,7 +58,7 @@ const ChangePasswordForm = () => {
       <div className="flex flex-col gap-1">
         <label
           htmlFor="newPassword"
-          className="text-sm font-medium text-gray-700"
+          className="text-sm font-medium text-gray-700 dark:text-gray-200"
         >
           Neues Passwort
         </label>
@@ -66,7 +66,7 @@ const ChangePasswordForm = () => {
           id="newPassword"
           name="newPassword"
           type="password"
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-main-color"
+          className="w-full px-4 py-2 border dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-main-color"
           placeholder="Geben Sie Ihr neues Passwort ein"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
@@ -77,7 +77,7 @@ const ChangePasswordForm = () => {
       <div className="flex flex-col gap-1">
         <label
           htmlFor="confirmPassword"
-          className="text-sm font-medium text-gray-700"
+          className="text-sm font-medium text-gray-700 dark:text-gray-200"
         >
           Bestätigen Sie Ihr neues Passwort
         </label>
@@ -85,7 +85,7 @@ const ChangePasswordForm = () => {
           id="confirmPassword"
           name="confirmPassword"
           type="password"
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-main-color"
+          className="w-full px-4 py-2 border dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-main-color"
           placeholder="Bestätigen Sie Ihr neues Passwort"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}

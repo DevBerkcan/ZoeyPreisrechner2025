@@ -4,14 +4,18 @@ import prisma from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
 
 // GET - Alle Kunden abrufen
-export async function GET() {
+export async function GET(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: "Nicht autorisiert" }, { status: 401 });
   }
 
   try {
+    const { searchParams } = new URL(request.url);
+    const tenantId = searchParams.get("tenantId");
+
     const customers = await prisma.customer.findMany({
+      where: tenantId ? { tenantId } : {},
       orderBy: { createdAt: "desc" },
     });
     return NextResponse.json(customers);
@@ -33,7 +37,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { firstName, lastName, email, phone, gender, notes, selectedAreas, totalPrice } = body;
+    const { firstName, lastName, email, phone, gender, notes, selectedAreas, totalPrice, tenantId } = body;
 
     if (!firstName || !lastName) {
       return NextResponse.json(
@@ -52,6 +56,7 @@ export async function POST(request: NextRequest) {
         notes: notes || null,
         selectedAreas: selectedAreas || null,
         totalPrice: totalPrice || null,
+        tenantId: tenantId || null,
       },
     });
 

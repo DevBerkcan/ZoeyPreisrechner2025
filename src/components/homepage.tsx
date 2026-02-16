@@ -3,12 +3,13 @@ import React, { useState } from "react";
 import Navbar from "./Navbar";
 import {
   Gender,
+  GenderPricingData,
   PRICING_TYPE,
   SELECTED_TYPE,
   Treatment,
   COMPARISON_ITEM,
 } from "@/app/types/types";
-import { pricingData } from "@/app/data";
+import { pricingData as defaultPricingData } from "@/app/data";
 import Footer from "./Footer";
 import PricingTable from "./PricingTable";
 import CustomerDialog from "./CustomerDialog";
@@ -19,13 +20,33 @@ import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { PrintButton } from "./PrintButton";
 
-const Home = () => {
-  // Persisted state (localStorage)
-  const [gender, setGender, genderLoaded] = useLocalStorage<Gender>("zoey-gender", "Frau");
-  const [discountPercent, setDiscountPercent, discountLoaded] = useLocalStorage<number>("zoey-discountPercent", 0);
-  const [selectedItems, setSelectedItems, itemsLoaded] = useLocalStorage<SELECTED_TYPE[]>("zoey-selectedItems", []);
-  const [sessionNotes, setSessionNotes, notesLoaded] = useLocalStorage<string[]>("zoey-sessionNotes", []);
-  const [comparisons, setComparisons, comparisonsLoaded] = useLocalStorage<COMPARISON_ITEM[]>("zoey-comparisons", []);
+export interface TenantConfig {
+  id: string;
+  slug: string;
+  name: string;
+  logoUrl: string | null;
+  mainColor: string;
+  secondaryColor: string;
+  contactEmail: string | null;
+  contactPhone: string | null;
+  website: string | null;
+}
+
+interface HomeProps {
+  tenant?: TenantConfig;
+  pricingData?: GenderPricingData;
+}
+
+const Home = ({ tenant, pricingData: propPricingData }: HomeProps = {}) => {
+  const slug = tenant?.slug ?? "default";
+  const pricingData = propPricingData ?? defaultPricingData;
+
+  // Persisted state (localStorage) - tenant-specific keys
+  const [gender, setGender, genderLoaded] = useLocalStorage<Gender>(`${slug}-gender`, "Frau");
+  const [discountPercent, setDiscountPercent, discountLoaded] = useLocalStorage<number>(`${slug}-discountPercent`, 0);
+  const [selectedItems, setSelectedItems, itemsLoaded] = useLocalStorage<SELECTED_TYPE[]>(`${slug}-selectedItems`, []);
+  const [sessionNotes, setSessionNotes, notesLoaded] = useLocalStorage<string[]>(`${slug}-sessionNotes`, []);
+  const [comparisons, setComparisons, comparisonsLoaded] = useLocalStorage<COMPARISON_ITEM[]>(`${slug}-comparisons`, []);
 
   // Non-persisted state
   const [selectedTreatment, setSelectedTreatment] = useState<string>("Haarentfernung");
@@ -185,19 +206,19 @@ const Home = () => {
   // Show loading state while localStorage is being loaded
   if (!isLoaded) {
     return (
-      <div className="w-full h-screen flex items-center justify-center bg-gray-50">
+      <div className="w-full h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="w-12 h-12 animate-spin text-main-color" />
-          <p className="text-gray-600">Laden...</p>
+          <p className="text-gray-600 dark:text-gray-400">Laden...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full bg-gray-50 text-white overflow-hidden relative">
+    <div className="w-full bg-gray-50 dark:bg-gray-900 text-white overflow-hidden relative">
       <div className="h-[calc(100vh-280px)] md:h-[calc(100vh-250px)] overflow-auto">
-        <Navbar />
+        <Navbar tenant={tenant} />
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           {/* Control Bar */}
           <div className="flex justify-between flex-wrap gap-4 mb-6">
@@ -210,7 +231,7 @@ const Home = () => {
                   className={`px-6 py-2.5 rounded-lg font-semibold min-h-[44px] transition-all duration-200 active:scale-95 ${
                     gender === g
                       ? "bg-main-color text-white shadow-lg ring-2 ring-main-color ring-offset-2"
-                      : "bg-white text-main-color border-2 border-main-color hover:bg-main-color/10 hover:shadow-md"
+                      : "bg-white dark:bg-gray-800 text-main-color border-2 border-main-color hover:bg-main-color/10 hover:shadow-md"
                   }`}
                 >
                   {g}
@@ -279,7 +300,7 @@ const Home = () => {
                       className={`px-4 py-3 min-h-[48px] border-2 rounded-lg font-medium transition-all duration-200 active:scale-95 ${
                         selectedTreatment === treatmentType
                           ? "bg-main-color text-white border-main-color shadow-lg scale-[1.02]"
-                          : "bg-white text-gray-700 border-gray-200 hover:border-main-color hover:shadow-md hover:bg-gray-50"
+                          : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-700 hover:border-main-color hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700"
                       }`}
                     >
                       {treatmentType.replace(/_/g, " ")}

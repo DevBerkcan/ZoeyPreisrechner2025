@@ -72,7 +72,7 @@ const BeforeAfterGallery = ({ selectedAreas }: BeforeAfterGalleryProps) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button className="flex items-center gap-2 px-3 py-2 rounded-md text-sm bg-purple-100 text-purple-800 border border-purple-300 hover:bg-purple-200 transition-colors">
+        <button className="flex items-center gap-2 px-3 py-2 rounded-md text-sm bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-300 border border-purple-300 dark:border-purple-700 hover:bg-purple-200 dark:hover:bg-purple-900/40 transition-colors">
           <Images size={16} />
           Ergebnisse zeigen
         </button>
@@ -85,7 +85,7 @@ const BeforeAfterGallery = ({ selectedAreas }: BeforeAfterGalleryProps) => {
         {!currentArea ? (
           // Areal-Auswahl
           <div className="py-4">
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
               Wähle ein Areal, um Behandlungsergebnisse zu sehen:
             </p>
             <div className="grid grid-cols-2 gap-2">
@@ -97,13 +97,13 @@ const BeforeAfterGallery = ({ selectedAreas }: BeforeAfterGalleryProps) => {
                     onClick={() => handleOpenGallery(area)}
                     className={`p-3 rounded-lg border text-left transition-colors ${
                       hasGallery
-                        ? "border-purple-300 bg-purple-50 hover:bg-purple-100"
-                        : "border-gray-200 bg-gray-50 hover:bg-gray-100"
+                        ? "border-purple-300 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/20 hover:bg-purple-100 dark:hover:bg-purple-900/40"
+                        : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
                     }`}
                   >
-                    <span className="font-medium text-gray-800">{area}</span>
+                    <span className="font-medium text-gray-800 dark:text-gray-100">{area}</span>
                     {hasGallery && (
-                      <span className="block text-xs text-purple-600 mt-1">
+                      <span className="block text-xs text-purple-600 dark:text-purple-400 mt-1">
                         Bilder verfügbar
                       </span>
                     )}
@@ -117,7 +117,7 @@ const BeforeAfterGallery = ({ selectedAreas }: BeforeAfterGalleryProps) => {
           <div className="py-4">
             <button
               onClick={() => setCurrentArea(null)}
-              className="flex items-center gap-1 text-sm text-gray-600 hover:text-gray-800 mb-4"
+              className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 mb-4"
             >
               <ChevronLeft size={16} />
               Zurück zur Auswahl
@@ -132,8 +132,8 @@ const BeforeAfterGallery = ({ selectedAreas }: BeforeAfterGalleryProps) => {
                 {/* Vorher/Nachher Vergleich */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <p className="text-sm font-medium text-gray-600 text-center">Vorher</p>
-                    <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 text-center">Vorher</p>
+                    <div className="aspect-square bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
                       {gallery.images[currentImageIndex]?.before ? (
                         <img
                           src={gallery.images[currentImageIndex].before}
@@ -143,14 +143,14 @@ const BeforeAfterGallery = ({ selectedAreas }: BeforeAfterGalleryProps) => {
                       ) : (
                         <div className="text-center p-4">
                           <Images size={40} className="mx-auto text-gray-400 mb-2" />
-                          <p className="text-xs text-gray-500">Bild wird noch hinzugefügt</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">Bild wird noch hinzugefügt</p>
                         </div>
                       )}
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <p className="text-sm font-medium text-gray-600 text-center">Nachher</p>
-                    <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 text-center">Nachher</p>
+                    <div className="aspect-square bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
                       {gallery.images[currentImageIndex]?.after ? (
                         <img
                           src={gallery.images[currentImageIndex].after}
@@ -160,14 +160,14 @@ const BeforeAfterGallery = ({ selectedAreas }: BeforeAfterGalleryProps) => {
                       ) : (
                         <div className="text-center p-4">
                           <Images size={40} className="mx-auto text-gray-400 mb-2" />
-                          <p className="text-xs text-gray-500">Bild wird noch hinzugefügt</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">Bild wird noch hinzugefügt</p>
                         </div>
                       )}
                     </div>
                   </div>
                 </div>
 
-                <p className="text-center text-sm text-gray-600">
+                <p className="text-center text-sm text-gray-600 dark:text-gray-400">
                   {gallery.images[currentImageIndex]?.description}
                 </p>
 
@@ -177,17 +177,17 @@ const BeforeAfterGallery = ({ selectedAreas }: BeforeAfterGalleryProps) => {
                     <button
                       onClick={() => setCurrentImageIndex(Math.max(0, currentImageIndex - 1))}
                       disabled={currentImageIndex === 0}
-                      className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
+                      className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50"
                     >
                       <ChevronLeft size={20} />
                     </button>
-                    <span className="py-2 text-sm text-gray-600">
+                    <span className="py-2 text-sm text-gray-600 dark:text-gray-400">
                       {currentImageIndex + 1} / {gallery.images.length}
                     </span>
                     <button
                       onClick={() => setCurrentImageIndex(Math.min(gallery.images.length - 1, currentImageIndex + 1))}
                       disabled={currentImageIndex === gallery.images.length - 1}
-                      className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
+                      className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50"
                     >
                       <ChevronRight size={20} />
                     </button>
@@ -197,20 +197,20 @@ const BeforeAfterGallery = ({ selectedAreas }: BeforeAfterGalleryProps) => {
             ) : (
               // Kein spezifisches Bildmaterial
               <div className="text-center py-8">
-                <Images size={48} className="mx-auto text-gray-300 mb-4" />
-                <p className="text-gray-600 mb-2">
+                <Images size={48} className="mx-auto text-gray-300 dark:text-gray-600 mb-4" />
+                <p className="text-gray-600 dark:text-gray-400 mb-2">
                   Für dieses Areal sind noch keine Bilder verfügbar.
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   Typische Ergebnisse: 80-90% dauerhafte Haarreduktion nach 6-8 Behandlungen.
                 </p>
               </div>
             )}
 
             {/* Behandlungsinfo */}
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-              <h4 className="font-medium text-blue-800 mb-2">Behandlungsablauf</h4>
-              <ul className="text-sm text-blue-700 space-y-1">
+            <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+              <h4 className="font-medium text-blue-800 dark:text-blue-300 mb-2">Behandlungsablauf</h4>
+              <ul className="text-sm text-blue-700 dark:text-blue-400 space-y-1">
                 <li>• 6-8 Behandlungen im Abstand von 4-6 Wochen</li>
                 <li>• Erste Ergebnisse oft schon nach 2-3 Sitzungen</li>
                 <li>• Dauerhafte Haarreduktion von 80-90%</li>

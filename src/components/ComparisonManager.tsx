@@ -72,7 +72,7 @@ const ComparisonManager = ({
 
           <div className="flex-1 overflow-y-auto py-4 space-y-4">
             {comparisons.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                 <Scale size={48} className="mx-auto mb-4 opacity-30" />
                 <p>Noch keine Varianten gespeichert.</p>
                 <p className="text-sm mt-2">
@@ -83,7 +83,7 @@ const ComparisonManager = ({
               comparisons.map((comparison) => (
                 <div
                   key={comparison.id}
-                  className="bg-gray-50 rounded-xl p-4 border border-gray-200 hover:border-main-color transition-colors"
+                  className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 hover:border-main-color transition-colors"
                 >
                   {/* Header */}
                   <div className="flex justify-between items-start mb-3">
@@ -91,7 +91,7 @@ const ComparisonManager = ({
                       <h3 className="font-bold text-main-color text-lg">
                         {comparison.label}
                       </h3>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                         {new Date(comparison.timestamp).toLocaleString("de-DE")}
                       </p>
                     </div>
@@ -100,7 +100,7 @@ const ComparisonManager = ({
                         {comparison.total.toFixed(2)}€
                       </p>
                       {comparison.discountPercent > 0 && (
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
                           inkl. {comparison.discountPercent}% Rabatt
                         </p>
                       )}
@@ -109,7 +109,7 @@ const ComparisonManager = ({
 
                   {/* Selected Areas */}
                   <div className="mb-3">
-                    <p className="text-xs text-gray-500 mb-1">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
                       {comparison.selectedItems.length} Behandlung(en):
                     </p>
                     <div className="flex flex-wrap gap-1">
@@ -125,7 +125,7 @@ const ComparisonManager = ({
                   </div>
 
                   {/* Actions */}
-                  <div className="flex gap-2 pt-2 border-t border-gray-200">
+                  <div className="flex gap-2 pt-2 border-t border-gray-200 dark:border-gray-700">
                     <button
                       onClick={() => {
                         onLoadComparison(comparison);
@@ -138,7 +138,7 @@ const ComparisonManager = ({
                     </button>
                     <button
                       onClick={() => onDeleteComparison(comparison.id)}
-                      className="flex items-center justify-center gap-2 px-3 py-2 bg-red-100 text-red-600 text-sm font-medium rounded-lg hover:bg-red-200 transition-colors"
+                      className="flex items-center justify-center gap-2 px-3 py-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-sm font-medium rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -154,7 +154,7 @@ const ComparisonManager = ({
                 onClick={() => {
                   onClearAllComparisons();
                 }}
-                className="flex items-center gap-2 px-4 py-2 text-red-600 text-sm font-medium hover:bg-red-50 rounded-lg transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-red-600 dark:text-red-400 text-sm font-medium hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
               >
                 <Trash2 size={16} />
                 Alle löschen
@@ -162,7 +162,7 @@ const ComparisonManager = ({
             )}
             <button
               onClick={() => setShowModal(false)}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors ml-auto"
+              className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors ml-auto"
             >
               <X size={16} />
               Schließen

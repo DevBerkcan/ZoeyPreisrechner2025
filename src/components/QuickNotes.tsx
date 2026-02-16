@@ -47,8 +47,8 @@ const QuickNotes = ({ notes, onNotesChange }: QuickNotesProps) => {
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
           notes.length > 0
-            ? "bg-yellow-100 text-yellow-800 border border-yellow-300"
-            : "bg-gray-100 text-gray-700 border border-gray-300"
+            ? "bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-300 border border-yellow-300 dark:border-yellow-700"
+            : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600"
         } hover:bg-opacity-80`}
       >
         <StickyNote size={16} />
@@ -56,13 +56,13 @@ const QuickNotes = ({ notes, onNotesChange }: QuickNotesProps) => {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
-          <div className="p-3 border-b border-gray-100">
+        <div className="absolute top-full left-0 mt-2 w-80 bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-50">
+          <div className="p-3 border-b border-gray-100 dark:border-gray-700">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="font-medium text-gray-800">Schnelle Notizen</h3>
+              <h3 className="font-medium text-gray-800 dark:text-gray-100">Schnelle Notizen</h3>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
               >
                 <X size={18} />
               </button>
@@ -74,9 +74,9 @@ const QuickNotes = ({ notes, onNotesChange }: QuickNotesProps) => {
                 {notes.map((note, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between bg-yellow-50 px-2 py-1 rounded text-sm"
+                    className="flex items-center justify-between bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded text-sm"
                   >
-                    <span className="text-gray-700">{note}</span>
+                    <span className="text-gray-700 dark:text-gray-200">{note}</span>
                     <button
                       onClick={() => removeNote(index)}
                       className="text-gray-400 hover:text-red-500 ml-2"
@@ -96,7 +96,7 @@ const QuickNotes = ({ notes, onNotesChange }: QuickNotesProps) => {
                 onChange={(e) => setCustomNote(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Eigene Notiz..."
-                className="flex-1 px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-main-color"
+                className="flex-1 px-2 py-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded text-sm focus:outline-none focus:ring-1 focus:ring-main-color"
               />
               <button
                 onClick={() => addNote(customNote)}
@@ -108,13 +108,13 @@ const QuickNotes = ({ notes, onNotesChange }: QuickNotesProps) => {
             </div>
 
             {/* Schnellauswahl */}
-            <p className="text-xs text-gray-500 mb-2">Schnellauswahl:</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Schnellauswahl:</p>
             <div className="flex flex-wrap gap-1">
               {QUICK_TEMPLATES.filter((t) => !notes.includes(t)).map((template) => (
                 <button
                   key={template}
                   onClick={() => addNote(template)}
-                  className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded hover:bg-gray-200 transition-colors"
+                  className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                 >
                   + {template}
                 </button>

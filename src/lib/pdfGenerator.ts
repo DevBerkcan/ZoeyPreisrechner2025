@@ -1,5 +1,12 @@
 import jsPDF from "jspdf";
 
+interface TenantPDFConfig {
+  name?: string;
+  mainColor?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+}
+
 interface PDFData {
   customerName: string;
   customerEmail?: string;
@@ -10,24 +17,42 @@ interface PDFData {
   discountPercent: number;
   total: number;
   date: Date;
+  tenant?: TenantPDFConfig;
+}
+
+function hexToRgb(hex: string): [number, number, number] {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)]
+    : [5, 150, 105]; // fallback to #059669
 }
 
 export async function generateQuotePDF(data: PDFData): Promise<Blob> {
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
 
-  // Colors (RGB)
-  const mainColor: [number, number, number] = [5, 150, 105]; // #059669
+  // Colors (RGB) - use tenant color or default
+  const mainColor: [number, number, number] = data.tenant?.mainColor
+    ? hexToRgb(data.tenant.mainColor)
+    : [5, 150, 105];
   const textColor: [number, number, number] = [51, 51, 51];
+
+  const companyName = data.tenant?.name || "NAZAR Beauty & Wellness";
+  // Split name for header display
+  const nameParts = companyName.split(" ");
+  const headerTitle = nameParts[0];
+  const headerSubtitle = nameParts.length > 1 ? nameParts.slice(1).join(" ") : "";
 
   let yPos = 20;
 
   // Header - Company Name
   doc.setFontSize(24);
   doc.setTextColor(...mainColor);
-  doc.text("NAZAR", 20, yPos);
-  doc.setFontSize(10);
-  doc.text("Beauty & Wellness", 20, yPos + 6);
+  doc.text(headerTitle, 20, yPos);
+  if (headerSubtitle) {
+    doc.setFontSize(10);
+    doc.text(headerSubtitle, 20, yPos + 6);
+  }
 
   // Date - right aligned
   doc.setFontSize(10);

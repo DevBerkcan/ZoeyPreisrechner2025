@@ -25,9 +25,9 @@ const PricingTable = ({
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+    <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full text-gray-800">
+        <table className="w-full text-gray-800 dark:text-gray-100">
           {/* Cleaner Header */}
           <thead>
             <tr className="bg-main-color text-white">
@@ -46,12 +46,12 @@ const PricingTable = ({
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
             {Object.entries(servicesBySelectedTreatment).map(
               ([serviceName, treatments], serviceIndex) => (
                 <React.Fragment key={serviceIndex}>
                   {/* Section Header */}
-                  <tr className="bg-gray-100">
+                  <tr className="bg-gray-100 dark:bg-gray-800">
                     <td colSpan={5} className="px-4 py-3 font-bold text-main-color text-sm md:text-base">
                       {serviceName}
                     </td>
@@ -90,12 +90,12 @@ const PricingTable = ({
                             {treatment.name}
                           </td>
                           <td className="px-3 md:px-4 py-4 text-center hidden md:table-cell">
-                            <span className="text-sm md:text-base font-semibold text-gray-600">
+                            <span className="text-sm md:text-base font-semibold text-gray-600 dark:text-gray-400">
                               {treatment.pricing["ab 5 Areale"] ?? 0}€
                             </span>
                           </td>
                           <td className="px-3 md:px-4 py-4 text-center hidden sm:table-cell">
-                            <span className="text-sm md:text-base font-semibold text-gray-600">
+                            <span className="text-sm md:text-base font-semibold text-gray-600 dark:text-gray-400">
                               {treatment.pricing["ab 3 Areale"] ?? 0}€
                             </span>
                           </td>

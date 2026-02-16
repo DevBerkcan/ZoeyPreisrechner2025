@@ -28,9 +28,9 @@ const FinancingCalculator = ({ total }: { total: number }) => {
       </button>
 
       {showFinancing && (
-        <div className="mt-2 bg-gray-50 rounded-md p-3 text-sm">
+        <div className="mt-2 bg-gray-50 dark:bg-gray-800 rounded-md p-3 text-sm">
           <p className="font-medium mb-2">Monatliche Raten:</p>
-          <div className="space-y-1 text-gray-700">
+          <div className="space-y-1 text-gray-700 dark:text-gray-200">
             <div className="flex justify-between">
               <span>6 Monate:</span>
               <span className="font-semibold">{calculateMonthlyRate(6)}€/Monat</span>
@@ -44,7 +44,7 @@ const FinancingCalculator = ({ total }: { total: number }) => {
               <span className="font-semibold">{calculateMonthlyRate(24)}€/Monat</span>
             </div>
           </div>
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
             * Konditionen über Credit4Beauty
           </p>
         </div>
@@ -103,21 +103,21 @@ const Footer = ({
             </button>
 
             <div className={`space-y-1 text-sm ${showDetails ? 'block' : 'hidden'} md:block`}>
-              <div className="flex justify-between text-gray-600">
+              <div className="flex justify-between text-gray-600 dark:text-gray-400">
                 <span>Einzelpreise:</span>
                 <span>{singleItemsPricingValue.toFixed(2)}€</span>
               </div>
-              <div className="flex justify-between text-gray-600">
+              <div className="flex justify-between text-gray-600 dark:text-gray-400">
                 <span>Paketpreis:</span>
                 <span className="text-main-color font-medium">
                   {subtotal.toFixed(2)}€ <span className="text-xs">(-{discountOnSelectingMore.toFixed(0)}%)</span>
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-600">Rabatt:</span>
+                <span className="text-gray-600 dark:text-gray-400">Rabatt:</span>
                 <input
                   type="number"
-                  className="w-16 text-gray-800 border border-gray-300 px-2 py-1 rounded-lg text-center text-sm focus:ring-2 focus:ring-main-color focus:border-transparent"
+                  className="w-16 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 px-2 py-1 rounded-lg text-center text-sm focus:ring-2 focus:ring-main-color focus:border-transparent"
                   value={discountPercent}
                   step={0.1}
                   min={0}
@@ -132,7 +132,7 @@ const Footer = ({
                     }
                   }}
                 />
-                <span className="text-gray-600">%</span>
+                <span className="text-gray-600 dark:text-gray-400">%</span>
               </div>
             </div>
           </div>
@@ -140,7 +140,7 @@ const Footer = ({
           {/* Center: Total Price - Prominent Display */}
           <div className="md:col-span-1">
             <div className="bg-main-color/5 p-4 rounded-xl border-l-4 border-main-color text-center md:text-left">
-              <p className="text-xs text-gray-500 uppercase tracking-wide">Gesamtbetrag</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Gesamtbetrag</p>
               <p className="text-3xl md:text-4xl font-bold text-main-color">
                 {total.toFixed(2)}€
               </p>

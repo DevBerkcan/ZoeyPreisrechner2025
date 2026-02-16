@@ -22,8 +22,8 @@ export default {
         "light-beige": "#F7E9D8",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        "main-color": "#059669", // Emerald Green (natürlich, beruhigend)
-        "secondary-color": "#D4A574", // Warm Beige (elegant, natürlich)
+        "main-color": "var(--tenant-main-color, #059669)",
+        "secondary-color": "var(--tenant-secondary-color, #D4A574)",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",

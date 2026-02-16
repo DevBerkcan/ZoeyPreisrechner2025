@@ -1,12 +1,11 @@
-import Home from "@/components/homepage";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-async function Page() {
+export default async function Page() {
   const session = await getServerSession();
   if (!session) {
     redirect("/api/auth/signin");
   }
-  return <Home />;
+
+  redirect("/admin/tenants");
 }
-export default Page;
