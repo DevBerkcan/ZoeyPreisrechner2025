@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
-import { pricingData } from "@/app/data";
 
-// GET - Alle Tenants mit Statistiken
 export async function GET() {
   const session = await getServerSession();
   if (!session) {
@@ -30,7 +28,6 @@ export async function GET() {
   }
 }
 
-// POST - Neuen Tenant erstellen + Standard-Services kopieren
 export async function POST(request: Request) {
   const session = await getServerSession();
   if (!session) {
@@ -59,7 +56,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Slug-Uniqueness pruefen
     const existing = await prisma.tenant.findUnique({ where: { slug } });
     if (existing) {
       return NextResponse.json(
@@ -68,7 +64,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Tenant erstellen
     const tenant = await prisma.tenant.create({
       data: {
         name,
@@ -83,49 +78,6 @@ export async function POST(request: Request) {
       },
     });
 
-    // Standard-Services aus data.ts kopieren
-    let sortOrder = 1;
-    interface ServiceData {
-      tenantId: string;
-      gender: string;
-      serviceType: string;
-      category: string;
-      name: string;
-      priceArea5: number | null;
-      priceArea3: number | null;
-      priceSingle: number;
-      sortOrder: number;
-      isActive: boolean;
-    }
-    const servicesToCreate: ServiceData[] = [];
-
-    for (const [gender, genderServices] of Object.entries(pricingData)) {
-      for (const [serviceType, categories] of Object.entries(genderServices)) {
-        for (const [category, treatments] of Object.entries(categories)) {
-          for (const treatment of treatments) {
-            servicesToCreate.push({
-              tenantId: tenant.id,
-              gender,
-              serviceType,
-              category,
-              name: treatment.name,
-              priceArea5: treatment.pricing["ab 5 Areale"] ?? null,
-              priceArea3: treatment.pricing["ab 3 Areale"] ?? null,
-              priceSingle:
-                treatment.pricing["Einzelpreis pro Behandlung"] ??
-                treatment.pricing["Kurspreis"] ??
-                0,
-              sortOrder: sortOrder++,
-              isActive: true,
-            });
-          }
-        }
-      }
-    }
-
-    await prisma.tenantService.createMany({ data: servicesToCreate });
-
-    // Optional: Ersten Admin-Zugang erstellen
     if (adminUsername && adminPassword) {
       await prisma.admin.create({
         data: {
@@ -136,7 +88,6 @@ export async function POST(request: Request) {
       });
     }
 
-    // Tenant mit Counts zurueckgeben
     const result = await prisma.tenant.findUnique({
       where: { id: tenant.id },
       include: {
@@ -156,7 +107,6 @@ export async function POST(request: Request) {
   }
 }
 
-// PUT - Tenant aktualisieren
 export async function PUT(request: Request) {
   const session = await getServerSession();
   if (!session) {
@@ -168,13 +118,9 @@ export async function PUT(request: Request) {
     const { id, ...updateData } = body;
 
     if (!id) {
-      return NextResponse.json(
-        { error: "Tenant ID fehlt" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Tenant ID fehlt" }, { status: 400 });
     }
 
-    // Slug-Uniqueness pruefen wenn Slug geaendert wird
     if (updateData.slug) {
       const existing = await prisma.tenant.findFirst({
         where: { slug: updateData.slug, NOT: { id } },
@@ -202,7 +148,6 @@ export async function PUT(request: Request) {
   }
 }
 
-// DELETE - Tenant loeschen
 export async function DELETE(request: Request) {
   const session = await getServerSession();
   if (!session) {
@@ -214,14 +159,9 @@ export async function DELETE(request: Request) {
     const id = searchParams.get("id");
 
     if (!id) {
-      return NextResponse.json(
-        { error: "Tenant ID fehlt" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Tenant ID fehlt" }, { status: 400 });
     }
 
-    // Services werden durch onDelete: Cascade automatisch geloescht
-    // Admins und Kunden muessen manuell geloescht werden (kein Cascade)
     await prisma.admin.deleteMany({ where: { tenantId: id } });
     await prisma.customer.deleteMany({ where: { tenantId: id } });
     await prisma.tenant.delete({ where: { id } });

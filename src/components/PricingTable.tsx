@@ -1,18 +1,20 @@
 import React from "react";
-import { Gender, SELECTED_TYPE, Treatment } from "@/app/types/types";
-import { pricingData as data } from "@/app/data";
+import { Gender, GenderPricingData, SELECTED_TYPE, Treatment } from "@/app/types/types";
 
 const PricingTable = ({
   selectedItems,
   selectedGender,
   selectedTreatment,
   addItemToCart,
+  pricingData,
 }: {
   selectedItems: SELECTED_TYPE[];
   selectedGender: Gender;
   selectedTreatment: string;
   addItemToCart: (treatment: Treatment, area: string) => void;
+  pricingData?: GenderPricingData;
 }) => {
+  const data = pricingData || {};
   const allServicesByGender = data[selectedGender];
   const servicesBySelectedTreatment = allServicesByGender[selectedTreatment];
 
@@ -28,7 +30,6 @@ const PricingTable = ({
     <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-gray-800 dark:text-gray-100">
-          {/* Cleaner Header */}
           <thead>
             <tr className="bg-main-color text-white">
               <th className="py-4 px-3 md:px-4 w-12"></th>
@@ -50,13 +51,11 @@ const PricingTable = ({
             {Object.entries(servicesBySelectedTreatment).map(
               ([serviceName, treatments], serviceIndex) => (
                 <React.Fragment key={serviceIndex}>
-                  {/* Section Header */}
                   <tr className="bg-gray-100 dark:bg-gray-800">
                     <td colSpan={5} className="px-4 py-3 font-bold text-main-color text-sm md:text-base">
                       {serviceName}
                     </td>
                   </tr>
-                  {/* Treatment Rows */}
                   {(treatments as Treatment[]).map(
                     (treatment: Treatment, treatmentIndex) => {
                       const isSelected = selectedItems.some(
@@ -81,9 +80,7 @@ const PricingTable = ({
                               type="checkbox"
                               className="w-5 h-5 accent-main-color cursor-pointer transition-transform checked:scale-110"
                               checked={isSelected}
-                              onChange={() =>
-                                addItemToCart(treatment, serviceName)
-                              }
+                              onChange={() => addItemToCart(treatment, serviceName)}
                             />
                           </td>
                           <td className="px-3 md:px-4 py-4 font-medium text-sm md:text-base">

@@ -9,7 +9,6 @@ import {
   Treatment,
   COMPARISON_ITEM,
 } from "@/app/types/types";
-import { pricingData as defaultPricingData } from "@/app/data";
 import Footer from "./Footer";
 import PricingTable from "./PricingTable";
 import CustomerDialog from "./CustomerDialog";
@@ -39,24 +38,22 @@ interface HomeProps {
 
 const Home = ({ tenant, pricingData: propPricingData }: HomeProps = {}) => {
   const slug = tenant?.slug ?? "default";
-  const pricingData = propPricingData ?? defaultPricingData;
+  const pricingData = propPricingData ?? {};
 
-  // Persisted state (localStorage) - tenant-specific keys
   const [gender, setGender, genderLoaded] = useLocalStorage<Gender>(`${slug}-gender`, "Frau");
   const [discountPercent, setDiscountPercent, discountLoaded] = useLocalStorage<number>(`${slug}-discountPercent`, 0);
   const [selectedItems, setSelectedItems, itemsLoaded] = useLocalStorage<SELECTED_TYPE[]>(`${slug}-selectedItems`, []);
   const [sessionNotes, setSessionNotes, notesLoaded] = useLocalStorage<string[]>(`${slug}-sessionNotes`, []);
   const [comparisons, setComparisons, comparisonsLoaded] = useLocalStorage<COMPARISON_ITEM[]>(`${slug}-comparisons`, []);
 
-  // Non-persisted state
-  const [selectedTreatment, setSelectedTreatment] = useState<string>("Haarentfernung");
+  const [selectedTreatment, setSelectedTreatment] = useState<string>(
+    () => Object.keys(pricingData["Frau"])[0]
+  );
   const [selectedPricingType, setSelectedPricingType] = useState<PRICING_TYPE>("Area1");
   const [showAllTreatments, setShowAllTreatments] = useState<boolean>(false);
 
-  // Check if all localStorage data is loaded
   const isLoaded = genderLoaded && discountLoaded && itemsLoaded && notesLoaded && comparisonsLoaded;
 
-  // Number of treatments to show initially
   const INITIAL_TREATMENTS_COUNT = 4;
 
   const updatePricing = (
@@ -126,7 +123,6 @@ const Home = ({ tenant, pricingData: propPricingData }: HomeProps = {}) => {
     };
     const updatedItems = [...selectedItems, newItem];
 
-    // Determine the new pricing type after adding the item
     const newPricingType =
       updatedItems.length >= 5
         ? "Area5"
@@ -135,10 +131,7 @@ const Home = ({ tenant, pricingData: propPricingData }: HomeProps = {}) => {
           : "Area1";
 
     if (newPricingType !== selectedPricingType) {
-      const updatedItemsWithPricing = updatePricing(
-        updatedItems,
-        newPricingType
-      );
+      const updatedItemsWithPricing = updatePricing(updatedItems, newPricingType);
       setSelectedPricingType(newPricingType as PRICING_TYPE);
       setSelectedItems(updatedItemsWithPricing);
     } else {
@@ -152,14 +145,12 @@ const Home = ({ tenant, pricingData: propPricingData }: HomeProps = {}) => {
       0
     );
     const discount = discountPercent * subtotal * 0.01;
-
     const total = subtotal - discount;
     return { subtotal, total };
   };
 
   const { subtotal, total } = calculateTotal();
 
-  // Comparison handlers
   const saveComparison = () => {
     if (selectedItems.length === 0) return;
 
@@ -178,7 +169,6 @@ const Home = ({ tenant, pricingData: propPricingData }: HomeProps = {}) => {
   const loadComparison = (comparison: COMPARISON_ITEM) => {
     setSelectedItems(comparison.selectedItems);
     setDiscountPercent(comparison.discountPercent);
-    // Update pricing type based on loaded items
     const newPricingType =
       comparison.selectedItems.length >= 5
         ? "Area5"
@@ -203,7 +193,6 @@ const Home = ({ tenant, pricingData: propPricingData }: HomeProps = {}) => {
     setComparisons([]);
   };
 
-  // Show loading state while localStorage is being loaded
   if (!isLoaded) {
     return (
       <div className="w-full h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
@@ -218,28 +207,29 @@ const Home = ({ tenant, pricingData: propPricingData }: HomeProps = {}) => {
   return (
     <div className="w-full bg-gray-50 dark:bg-gray-900 text-white overflow-hidden relative">
       <div className="min-h-[calc(100vh-0px)] overflow-auto pb-0 mb-0">
-
         <Navbar tenant={tenant} />
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-          {/* Control Bar */}
           <div className="flex justify-between flex-wrap gap-4 mb-6">
-            {/* Gender Selector */}
             <div className="flex gap-3">
               {["Frau", "Mann"].map((g) => (
                 <button
                   key={g}
-                  onClick={() => setGender(g as Gender)}
-                  className={`px-6 py-2.5 rounded-lg font-semibold min-h-[44px] transition-all duration-200 active:scale-95 ${gender === g
+                  onClick={() => {
+                    const firstTreatment = Object.keys(pricingData[g as Gender])[0];
+                    setGender(g as Gender);
+                    setSelectedTreatment(firstTreatment);
+                  }}
+                  className={`px-6 py-2.5 rounded-lg font-semibold min-h-[44px] transition-all duration-200 active:scale-95 ${
+                    gender === g
                       ? "bg-main-color text-white shadow-lg ring-2 ring-main-color ring-offset-2"
                       : "bg-white dark:bg-gray-800 text-main-color border-2 border-main-color hover:bg-main-color/10 hover:shadow-md"
-                    }`}
+                  }`}
                 >
                   {g}
                 </button>
               ))}
             </div>
 
-            {/* Action Buttons */}
             <div className="flex gap-3 flex-wrap">
               <ComparisonManager
                 selectedItems={selectedItems}
@@ -281,7 +271,6 @@ const Home = ({ tenant, pricingData: propPricingData }: HomeProps = {}) => {
             </div>
           </div>
 
-          {/* Treatment Type Tabs */}
           {(() => {
             const allTreatments = Object.keys(pricingData[gender]);
             const visibleTreatments = showAllTreatments
@@ -297,17 +286,17 @@ const Home = ({ tenant, pricingData: propPricingData }: HomeProps = {}) => {
                     <button
                       key={treatmentType}
                       onClick={() => setSelectedTreatment(treatmentType)}
-                      className={`px-4 py-3 min-h-[48px] border-2 rounded-lg font-medium transition-all duration-200 active:scale-95 ${selectedTreatment === treatmentType
+                      className={`px-4 py-3 min-h-[48px] border-2 rounded-lg font-medium transition-all duration-200 active:scale-95 ${
+                        selectedTreatment === treatmentType
                           ? "bg-main-color text-white border-main-color shadow-lg scale-[1.02]"
                           : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-700 hover:border-main-color hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700"
-                        }`}
+                      }`}
                     >
                       {treatmentType.replace(/_/g, " ")}
                     </button>
                   ))}
                 </div>
 
-                {/* Expand/Collapse Button */}
                 {hasMoreTreatments && (
                   <button
                     onClick={() => setShowAllTreatments(!showAllTreatments)}
@@ -337,10 +326,10 @@ const Home = ({ tenant, pricingData: propPricingData }: HomeProps = {}) => {
             selectedTreatment={selectedTreatment}
             selectedItems={selectedItems}
             addItemToCart={addItemToCart}
+            pricingData={pricingData}
           />
         </div>
       </div>
-      {/* Payment Section */}
       <Footer
         selectedItems={selectedItems}
         subtotal={subtotal}
