@@ -28,7 +28,6 @@ CREATE TABLE "TenantService" (
     "tenantId" TEXT NOT NULL,
     "gender" TEXT NOT NULL,
     "serviceType" TEXT NOT NULL,
-    "category" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "priceArea5" DOUBLE PRECISION,
     "priceArea3" DOUBLE PRECISION,

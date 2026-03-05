@@ -9,7 +9,6 @@ interface ServiceRow {
   id: string;
   gender: string;
   serviceType: string;
-  category: string;
   name: string;
   priceArea5: number | null;
   priceArea3: number | null;
@@ -26,12 +25,10 @@ export default function AdminServicesPage() {
   const [saving, setSaving] = useState<string | null>(null);
   const [filter, setFilter] = useState({ gender: "Frau", serviceType: "" });
 
-  // New service form
   const [showAddForm, setShowAddForm] = useState(false);
   const [newService, setNewService] = useState({
     gender: "Frau",
     serviceType: "",
-    category: "",
     name: "",
     priceArea5: "",
     priceArea3: "",
@@ -73,7 +70,9 @@ export default function AdminServicesPage() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        ...newService,
+        gender: newService.gender,
+        serviceType: newService.serviceType,
+        name: newService.name,
         priceArea5: newService.priceArea5 ? parseFloat(newService.priceArea5) : null,
         priceArea3: newService.priceArea3 ? parseFloat(newService.priceArea3) : null,
         priceSingle: parseFloat(newService.priceSingle) || 0,
@@ -82,12 +81,11 @@ export default function AdminServicesPage() {
     });
     if (res.ok) {
       setShowAddForm(false);
-      setNewService({ gender: "Frau", serviceType: "", category: "", name: "", priceArea5: "", priceArea3: "", priceSingle: "" });
+      setNewService({ gender: "Frau", serviceType: "", name: "", priceArea5: "", priceArea3: "", priceSingle: "" });
       fetchServices();
     }
   };
 
-  // Get unique service types for filter
   const serviceTypes = [...new Set(services.map((s) => s.serviceType))];
 
   const filteredServices = services.filter((s) => {
@@ -96,12 +94,10 @@ export default function AdminServicesPage() {
     return true;
   });
 
-  // Group by serviceType > category
-  const grouped: Record<string, Record<string, ServiceRow[]>> = {};
+  const grouped: Record<string, ServiceRow[]> = {};
   filteredServices.forEach((s) => {
-    if (!grouped[s.serviceType]) grouped[s.serviceType] = {};
-    if (!grouped[s.serviceType][s.category]) grouped[s.serviceType][s.category] = [];
-    grouped[s.serviceType][s.category].push(s);
+    if (!grouped[s.serviceType]) grouped[s.serviceType] = [];
+    grouped[s.serviceType].push(s);
   });
 
   if (loading) {
@@ -115,7 +111,6 @@ export default function AdminServicesPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
             <Link
@@ -141,7 +136,6 @@ export default function AdminServicesPage() {
           </button>
         </div>
 
-        {/* Filters */}
         <div className="flex gap-4 mb-6">
           <select
             value={filter.gender}
@@ -165,7 +159,6 @@ export default function AdminServicesPage() {
           </select>
         </div>
 
-        {/* Add Form */}
         {showAddForm && (
           <div className="bg-white dark:bg-gray-800 rounded-xl p-6 mb-6 border border-gray-200 dark:border-gray-700">
             <h2 className="font-semibold text-lg mb-4 text-gray-800 dark:text-gray-100">Neuen Service hinzufuegen</h2>
@@ -223,103 +216,96 @@ export default function AdminServicesPage() {
           </div>
         )}
 
-        {/* Services Table */}
-        {Object.entries(grouped).map(([serviceType, categories]) => (
+        {Object.entries(grouped).map(([serviceType, items]) => (
           <div key={serviceType} className="mb-8">
             <h2 className="text-xl font-bold text-main-color mb-4">
               {serviceType.replace(/_/g, " ")}
             </h2>
-
-            {Object.entries(categories).map(([category, items]) => (
-              <div key={category} className="mb-4">
-                <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">
-                  {category}
-                </h3>
-                <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="bg-gray-50 dark:bg-gray-700 text-left text-sm text-gray-600 dark:text-gray-300">
-                        <th className="px-4 py-3">Name</th>
-                        <th className="px-4 py-3 text-center">ab 5 Areale</th>
-                        <th className="px-4 py-3 text-center">ab 3 Areale</th>
-                        <th className="px-4 py-3 text-center">Einzelpreis</th>
-                        <th className="px-4 py-3 w-24"></th>
+            <div className="mb-4">
+              <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+                <table className="w-full">
+                  <thead>
+                    <tr className="bg-gray-50 dark:bg-gray-700 text-left text-sm text-gray-600 dark:text-gray-300">
+                      <th className="px-4 py-3">Name</th>
+                      <th className="px-4 py-3 text-center">ab 5 Areale</th>
+                      <th className="px-4 py-3 text-center">ab 3 Areale</th>
+                      <th className="px-4 py-3 text-center">Einzelpreis</th>
+                      <th className="px-4 py-3 w-24"></th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                    {items.map((service) => (
+                      <tr key={service.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                        <td className="px-4 py-3 text-gray-800 dark:text-gray-100">
+                          {service.name}
+                        </td>
+                        <td className="px-4 py-3">
+                          <input
+                            type="number"
+                            value={service.priceArea5 ?? ""}
+                            onChange={(e) => {
+                              const val = e.target.value ? parseFloat(e.target.value) : null;
+                              setServices(services.map((s) =>
+                                s.id === service.id ? { ...s, priceArea5: val } : s
+                              ));
+                            }}
+                            className="w-20 px-2 py-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded text-center text-sm"
+                          />
+                        </td>
+                        <td className="px-4 py-3">
+                          <input
+                            type="number"
+                            value={service.priceArea3 ?? ""}
+                            onChange={(e) => {
+                              const val = e.target.value ? parseFloat(e.target.value) : null;
+                              setServices(services.map((s) =>
+                                s.id === service.id ? { ...s, priceArea3: val } : s
+                              ));
+                            }}
+                            className="w-20 px-2 py-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded text-center text-sm"
+                          />
+                        </td>
+                        <td className="px-4 py-3">
+                          <input
+                            type="number"
+                            value={service.priceSingle}
+                            onChange={(e) => {
+                              const val = parseFloat(e.target.value) || 0;
+                              setServices(services.map((s) =>
+                                s.id === service.id ? { ...s, priceSingle: val } : s
+                              ));
+                            }}
+                            className="w-20 px-2 py-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded text-center text-sm font-semibold"
+                          />
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex gap-1">
+                            <button
+                              onClick={() => updateService(service)}
+                              className="p-1.5 text-main-color hover:bg-main-color/10 rounded"
+                              title="Speichern"
+                            >
+                              {saving === service.id ? (
+                                <Loader2 size={16} className="animate-spin" />
+                              ) : (
+                                <Save size={16} />
+                              )}
+                            </button>
+                            <button
+                              onClick={() => deleteService(service.id)}
+                              className="p-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded"
+                              title="Loeschen"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                      {items.map((service) => (
-                        <tr key={service.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                          <td className="px-4 py-3 text-gray-800 dark:text-gray-100">
-                            {service.name}
-                          </td>
-                          <td className="px-4 py-3">
-                            <input
-                              type="number"
-                              value={service.priceArea5 ?? ""}
-                              onChange={(e) => {
-                                const val = e.target.value ? parseFloat(e.target.value) : null;
-                                setServices(services.map((s) =>
-                                  s.id === service.id ? { ...s, priceArea5: val } : s
-                                ));
-                              }}
-                              className="w-20 px-2 py-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded text-center text-sm"
-                            />
-                          </td>
-                          <td className="px-4 py-3">
-                            <input
-                              type="number"
-                              value={service.priceArea3 ?? ""}
-                              onChange={(e) => {
-                                const val = e.target.value ? parseFloat(e.target.value) : null;
-                                setServices(services.map((s) =>
-                                  s.id === service.id ? { ...s, priceArea3: val } : s
-                                ));
-                              }}
-                              className="w-20 px-2 py-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded text-center text-sm"
-                            />
-                          </td>
-                          <td className="px-4 py-3">
-                            <input
-                              type="number"
-                              value={service.priceSingle}
-                              onChange={(e) => {
-                                const val = parseFloat(e.target.value) || 0;
-                                setServices(services.map((s) =>
-                                  s.id === service.id ? { ...s, priceSingle: val } : s
-                                ));
-                              }}
-                              className="w-20 px-2 py-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded text-center text-sm font-semibold"
-                            />
-                          </td>
-                          <td className="px-4 py-3">
-                            <div className="flex gap-1">
-                              <button
-                                onClick={() => updateService(service)}
-                                className="p-1.5 text-main-color hover:bg-main-color/10 rounded"
-                                title="Speichern"
-                              >
-                                {saving === service.id ? (
-                                  <Loader2 size={16} className="animate-spin" />
-                                ) : (
-                                  <Save size={16} />
-                                )}
-                              </button>
-                              <button
-                                onClick={() => deleteService(service.id)}
-                                className="p-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded"
-                                title="Loeschen"
-                              >
-                                <Trash2 size={16} />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                    ))}
+                  </tbody>
+                </table>
               </div>
-            ))}
+            </div>
           </div>
         ))}
 
