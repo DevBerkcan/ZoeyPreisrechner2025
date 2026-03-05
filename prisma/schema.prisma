@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,39 +8,37 @@ datasource db {
 }
 
 model Tenant {
-  id              String   @id @default(uuid())
-  slug            String   @unique
-  name            String
-  logoUrl         String?
-  mainColor       String   @default("#059669")
-  secondaryColor  String   @default("#D4A574")
-  contactEmail    String?
-  contactPhone    String?
-  website         String?
-  isActive        Boolean  @default(true)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  admins    admin[]
-  customers Customer[]
-  services  TenantService[]
+  id             String          @id @default(uuid())
+  slug           String          @unique
+  name           String
+  logoUrl        String?
+  mainColor      String          @default("#059669")
+  secondaryColor String          @default("#D4A574")
+  contactEmail   String?
+  contactPhone   String?
+  website        String?
+  isActive       Boolean         @default(true)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  customers      Customer[]
+  services       TenantService[]
+  admins         admin[]
 }
 
 model TenantService {
   id          String   @id @default(uuid())
   tenantId    String
-  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  gender      String   // "Frau" oder "Mann"
-  serviceType String   // "Haarentfernung", "Microneedling", etc.
-  category    String   // "Kopf", "Koerper", "Pakete", etc.
-  name        String   // "Oberlippe", "Achseln", etc.
-  priceArea5  Float?   // Preis bei ab 5 Areale
-  priceArea3  Float?   // Preis bei ab 3 Areale
-  priceSingle Float    // Einzelpreis pro Behandlung
+  gender      String
+  serviceType String
+  name        String
+  priceArea5  Float?
+  priceArea3  Float?
+  priceSingle Float
   sortOrder   Int      @default(0)
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   @@index([tenantId, gender, serviceType])
 }
@@ -55,15 +47,13 @@ model admin {
   id       String   @id @default(uuid())
   username String
   password String
+  updateAt DateTime @updatedAt
   tenantId String?
   tenant   Tenant?  @relation(fields: [tenantId], references: [id])
-  updateAt DateTime @updatedAt
 }
 
 model Customer {
   id            String   @id @default(uuid())
-  tenantId      String?
-  tenant        Tenant?  @relation(fields: [tenantId], references: [id])
   firstName     String
   lastName      String
   email         String?
@@ -74,4 +64,12 @@ model Customer {
   totalPrice    Float?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  tenantId      String?
+  tenant        Tenant?  @relation(fields: [tenantId], references: [id])
+}
+
+model playing_with_neon {
+  id    Int    @id @default(autoincrement())
+  name  String
+  value Float? @db.Real
 }
