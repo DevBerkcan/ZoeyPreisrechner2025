@@ -55,89 +55,69 @@ const Home = ({ tenant, pricingData: propPricingData }: HomeProps = {}) => {
   const isLoaded = genderLoaded && discountLoaded && itemsLoaded && notesLoaded && comparisonsLoaded;
 
   const INITIAL_TREATMENTS_COUNT = 4;
-
-  const updatePricing = (
-    selectedItems: SELECTED_TYPE[],
-    selectedPricingType: string
-  ) => {
-    return selectedItems.map((item) => {
-      const pricingValueString =
-        selectedPricingType === "Area5"
-          ? "ab 5 Areale"
-          : selectedPricingType === "Area3"
-            ? "ab 3 Areale"
-            : "Einzelpreis pro Behandlung";
-
-      return {
-        ...item,
-        price:
-          item.treatment.pricing[pricingValueString] ||
-          item.treatment.pricing["Einzelpreis pro Behandlung"] ||
-          item.treatment.pricing["Kurspreis"],
-      };
-    });
-  };
-
-  const addItemToCart = (treatment: Treatment, area: string) => {
-    const existingItem = selectedItems.find((item) => item.id === treatment.id);
-
-    if (existingItem) {
-      let updatedItems = selectedItems.filter(
-        (item) => item.id !== existingItem.id
-      );
-
-      const newPricingType =
-        updatedItems.length >= 5
-          ? "Area5"
-          : updatedItems.length >= 3
-            ? "Area3"
-            : "Area1";
-
-      if (newPricingType !== selectedPricingType) {
-        updatedItems = updatePricing(updatedItems, newPricingType);
-        setSelectedPricingType(newPricingType as PRICING_TYPE);
-      }
-
-      setSelectedItems(updatedItems);
-      return;
+  
+const updatePricing = (
+  items: SELECTED_TYPE[],
+  pricingType: string
+) => {
+  return items.map((item) => {
+    if (pricingType === "Area5" && item.treatment.pricing["ab 5 Areale"]) {
+      return { ...item, price: item.treatment.pricing["ab 5 Areale"] / 5 };
     }
-
-    const pricingKey =
-      selectedPricingType === "Area5"
-        ? "ab 5 Areale"
-        : selectedPricingType === "Area3"
-          ? "ab 3 Areale"
-          : "Einzelpreis pro Behandlung";
-    const price =
-      treatment.pricing[pricingKey] ||
-      treatment.pricing["Einzelpreis pro Behandlung"] ||
-      treatment.pricing["Kurspreis"];
-
-    const newItem = {
-      id: treatment.id,
-      gender,
-      area,
-      treatment,
-      selectedTreatment,
-      price,
+    if (pricingType === "Area3" && item.treatment.pricing["ab 3 Areale"]) {
+      return { ...item, price: item.treatment.pricing["ab 3 Areale"] / 3 };
+    }
+    return {
+      ...item,
+      price:
+        item.treatment.pricing["Einzelpreis pro Behandlung"] ??
+        item.treatment.pricing["Kurspreis"] ??
+        0,
     };
-    const updatedItems = [...selectedItems, newItem];
+  });
+};
 
-    const newPricingType =
+
+const addItemToCart = (treatment: Treatment, area: string) => {
+  const existingItem = selectedItems.find((item) => item.id === treatment.id);
+
+  if (existingItem) {
+    const updatedItems = selectedItems.filter((item) => item.id !== existingItem.id);
+
+    const newPricingType: PRICING_TYPE =
       updatedItems.length >= 5
         ? "Area5"
         : updatedItems.length >= 3
           ? "Area3"
           : "Area1";
 
-    if (newPricingType !== selectedPricingType) {
-      const updatedItemsWithPricing = updatePricing(updatedItems, newPricingType);
-      setSelectedPricingType(newPricingType as PRICING_TYPE);
-      setSelectedItems(updatedItemsWithPricing);
-    } else {
-      setSelectedItems(updatedItems);
-    }
+    setSelectedPricingType(newPricingType);
+    setSelectedItems(updatePricing(updatedItems, newPricingType));
+    return;
+  }
+
+  const newItem: SELECTED_TYPE = {
+    id: treatment.id,
+    gender,
+    area,
+    treatment,
+    selectedTreatment,
+    price: treatment.pricing["Einzelpreis pro Behandlung"] || treatment.pricing["Kurspreis"] || 0,
   };
+
+  const updatedItems = [...selectedItems, newItem];
+
+  const newPricingType: PRICING_TYPE =
+    updatedItems.length >= 5
+      ? "Area5"
+      : updatedItems.length >= 3
+        ? "Area3"
+        : "Area1";
+
+  setSelectedPricingType(newPricingType);
+  setSelectedItems(updatePricing(updatedItems, newPricingType));
+};
+
 
   const calculateTotal = () => {
     const subtotal = selectedItems.reduce(

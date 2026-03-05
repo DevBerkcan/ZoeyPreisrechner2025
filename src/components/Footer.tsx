@@ -67,20 +67,16 @@ const Footer = ({
   total: number;
 }) => {
   // Berechne den Gesamtpreis für 3- und 5-Areale-Preismodelle
-  const calculateTotalPrice = (pricingKey: string) => {
-    return selectedItems.reduce((acc, curr) => {
-      return (
-        acc +
-        (curr.treatment.pricing[pricingKey] ||
-          curr.treatment.pricing["Einzelpreis pro Behandlung"] ||
-          curr.treatment.pricing["Kurspreis"])
-      );
-    }, 0);
-  };
+const calculateTotalPrice = (pricingKey: string, divisor: number = 1) => {
+  return selectedItems.reduce((acc, curr) => {
+    const price = curr.treatment.pricing[pricingKey];
+    if (!price) return acc + (curr.treatment.pricing["Einzelpreis pro Behandlung"] || curr.treatment.pricing["Kurspreis"] || 0);
+    return acc + price / divisor;
+  }, 0);
+};
 
-  const singleItemsPricingValue = calculateTotalPrice(
-    "Einzelpreis pro Behandlung"
-  );
+const singleItemsPricingValue = calculateTotalPrice("Einzelpreis pro Behandlung");
+
 
   const discountOnSelectingMore = singleItemsPricingValue
     ? (100 * (singleItemsPricingValue - subtotal)) / singleItemsPricingValue

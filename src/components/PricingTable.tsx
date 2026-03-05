@@ -16,9 +16,9 @@ const PricingTable = ({
 }) => {
   const data = pricingData || {};
   const allServicesByGender = data[selectedGender];
-  const servicesBySelectedTreatment = allServicesByGender[selectedTreatment];
+  const treatments: Treatment[] = allServicesByGender?.[selectedTreatment] ?? [];
 
-  if (!servicesBySelectedTreatment) {
+  if (!treatments.length) {
     return (
       <p className="text-red-500">
         No data available for the selected treatment.
@@ -48,67 +48,57 @@ const PricingTable = ({
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-            {Object.entries(servicesBySelectedTreatment).map(
-              ([serviceName, treatments], serviceIndex) => (
-                <React.Fragment key={serviceIndex}>
-                  <tr className="bg-gray-100 dark:bg-gray-800">
-                    <td colSpan={5} className="px-4 py-3 font-bold text-main-color text-sm md:text-base">
-                      {serviceName}
-                    </td>
-                  </tr>
-                  {(treatments as Treatment[]).map(
-                    (treatment: Treatment, treatmentIndex) => {
-                      const isSelected = selectedItems.some(
-                        (item) =>
-                          item.gender === selectedGender &&
-                          item.area === serviceName &&
-                          item.treatment.name === treatment.name &&
-                          item.selectedTreatment === selectedTreatment
-                      );
-                      return (
-                        <tr
-                          key={treatmentIndex}
-                          className={`min-h-[52px] transition-all duration-200 cursor-pointer ${
-                            isSelected
-                              ? "bg-main-color/10 border-l-4 border-l-main-color"
-                              : "hover:bg-main-color/5"
-                          }`}
-                          onClick={() => addItemToCart(treatment, serviceName)}
-                        >
-                          <td className="px-3 md:px-4 py-4 text-center">
-                            <input
-                              type="checkbox"
-                              className="w-5 h-5 accent-main-color cursor-pointer transition-transform checked:scale-110"
-                              checked={isSelected}
-                              onChange={() => addItemToCart(treatment, serviceName)}
-                            />
-                          </td>
-                          <td className="px-3 md:px-4 py-4 font-medium text-sm md:text-base">
-                            {treatment.name}
-                          </td>
-                          <td className="px-3 md:px-4 py-4 text-center hidden md:table-cell">
-                            <span className="text-sm md:text-base font-semibold text-gray-600 dark:text-gray-400">
-                              {treatment.pricing["ab 5 Areale"] ?? 0}€
-                            </span>
-                          </td>
-                          <td className="px-3 md:px-4 py-4 text-center hidden sm:table-cell">
-                            <span className="text-sm md:text-base font-semibold text-gray-600 dark:text-gray-400">
-                              {treatment.pricing["ab 3 Areale"] ?? 0}€
-                            </span>
-                          </td>
-                          <td className="px-3 md:px-4 py-4 text-center">
-                            <span className="text-base md:text-lg font-bold text-secondary-color">
-                              {(treatment.pricing["Einzelpreis pro Behandlung"] ||
-                                treatment.pricing["Kurspreis"]) ?? 0}€
-                            </span>
-                          </td>
-                        </tr>
-                      );
-                    }
-                  )}
-                </React.Fragment>
-              )
-            )}
+            {treatments.map((treatment: Treatment, index: number) => {
+              const isSelected = selectedItems.some(
+                (item) =>
+                  item.gender === selectedGender &&
+                  item.treatment.name === treatment.name &&
+                  item.selectedTreatment === selectedTreatment
+              );
+              return (
+                <tr
+                  key={index}
+                  className={`min-h-[52px] transition-all duration-200 cursor-pointer ${
+                    isSelected
+                      ? "bg-main-color/10 border-l-4 border-l-main-color"
+                      : "hover:bg-main-color/5"
+                  }`}
+                  onClick={() => addItemToCart(treatment, selectedTreatment)}
+                >
+                  <td className="px-3 md:px-4 py-4 text-center">
+                    <input
+                      type="checkbox"
+                      className="w-5 h-5 accent-main-color cursor-pointer transition-transform checked:scale-110"
+                      checked={isSelected}
+                      onChange={() => addItemToCart(treatment, selectedTreatment)}
+                    />
+                  </td>
+                  <td className="px-3 md:px-4 py-4 font-medium text-sm md:text-base">
+                    {treatment.name}
+                  </td>
+                  <td className="px-3 md:px-4 py-4 text-center hidden md:table-cell">
+                    <span className="text-sm md:text-base font-semibold text-gray-600 dark:text-gray-400">
+                      {treatment.pricing["ab 5 Areale"]
+                        ? Math.round(treatment.pricing["ab 5 Areale"] / 5)
+                        : 0}€
+                    </span>
+                  </td>
+                  <td className="px-3 md:px-4 py-4 text-center hidden sm:table-cell">
+                    <span className="text-sm md:text-base font-semibold text-gray-600 dark:text-gray-400">
+                      {treatment.pricing["ab 3 Areale"]
+                        ? Math.round(treatment.pricing["ab 3 Areale"] / 3)
+                        : 0}€
+                    </span>
+                  </td>
+                  <td className="px-3 md:px-4 py-4 text-center">
+                    <span className="text-base md:text-lg font-bold text-secondary-color">
+                      {(treatment.pricing["Einzelpreis pro Behandlung"] ||
+                        treatment.pricing["Kurspreis"]) ?? 0}€
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
