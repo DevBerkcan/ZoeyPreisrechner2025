@@ -185,12 +185,6 @@ export default function AdminServicesPage() {
                 className="px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg"
               />
               <input
-                placeholder="Kategorie (z.B. Kopf)"
-                value={newService.category}
-                onChange={(e) => setNewService({ ...newService, category: e.target.value })}
-                className="px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg"
-              />
-              <input
                 placeholder="Name (z.B. Oberlippe)"
                 value={newService.name}
                 onChange={(e) => setNewService({ ...newService, name: e.target.value })}
@@ -220,7 +214,7 @@ export default function AdminServicesPage() {
               />
               <button
                 onClick={addService}
-                disabled={!newService.name || !newService.serviceType || !newService.category || !newService.priceSingle}
+                disabled={!newService.name || !newService.serviceType || !newService.priceSingle}
                 className="px-4 py-2 bg-main-color text-white rounded-lg hover:bg-opacity-90 disabled:opacity-50"
               >
                 Hinzufuegen

@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import ChangePassword from "./changePassword";
 import SignoutButton from "./SignoutButton";
-import { Users, Building2 } from "lucide-react";
+import { Users, Building2, Settings } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { TenantConfig } from "./homepage";
 
@@ -49,6 +49,15 @@ const Navbar = ({ tenant }: NavbarProps) => {
             <Users size={16} />
             <span className="hidden sm:inline">Kunden</span>
           </Link>
+          {tenant && (
+            <Link
+              href={`/${tenant.slug}/admin/services`}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-main-color text-sm text-main-color hover:bg-main-color/10 transition-colors"
+            >
+              <Settings size={16} />
+              <span className="hidden sm:inline">Services</span>
+            </Link>
+          )}
           <ChangePassword />
           <SignoutButton />
         </div>

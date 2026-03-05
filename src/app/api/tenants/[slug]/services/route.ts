@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
 
-// GET all services for a tenant
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
@@ -13,7 +12,7 @@ export async function GET(
     where: { slug },
     include: {
       services: {
-        orderBy: [{ gender: "asc" }, { serviceType: "asc" }, { category: "asc" }, { sortOrder: "asc" }],
+        orderBy: [{ gender: "asc" }, { serviceType: "asc" }, { sortOrder: "asc" }],
       },
     },
   });
@@ -25,7 +24,6 @@ export async function GET(
   return NextResponse.json(tenant.services);
 }
 
-// POST create a new service
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
@@ -36,16 +34,15 @@ export async function POST(
   }
 
   const { slug } = await params;
-
   const tenant = await prisma.tenant.findUnique({ where: { slug } });
   if (!tenant) {
     return NextResponse.json({ error: "Tenant nicht gefunden" }, { status: 404 });
   }
 
   const body = await request.json();
-  const { gender, serviceType, category, name, priceArea5, priceArea3, priceSingle, sortOrder } = body;
+  const { gender, serviceType, name, priceArea5, priceArea3, priceSingle, sortOrder, isActive } = body;
 
-  if (!gender || !serviceType || !category || !name || priceSingle == null) {
+  if (!gender || !serviceType || !name || priceSingle == null) {
     return NextResponse.json({ error: "Pflichtfelder fehlen" }, { status: 400 });
   }
 
@@ -54,19 +51,18 @@ export async function POST(
       tenantId: tenant.id,
       gender,
       serviceType,
-      category,
       name,
       priceArea5: priceArea5 ?? null,
       priceArea3: priceArea3 ?? null,
       priceSingle,
       sortOrder: sortOrder ?? 0,
+      isActive: isActive ?? true,
     },
   });
 
   return NextResponse.json(service, { status: 201 });
 }
 
-// PUT update a service
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
@@ -76,8 +72,14 @@ export async function PUT(
     return NextResponse.json({ error: "Nicht autorisiert" }, { status: 401 });
   }
 
+  const { slug } = await params;
+  const tenant = await prisma.tenant.findUnique({ where: { slug } });
+  if (!tenant) {
+    return NextResponse.json({ error: "Tenant nicht gefunden" }, { status: 404 });
+  }
+
   const body = await request.json();
-  const { id, ...updateData } = body;
+  const { id, gender, serviceType, name, priceArea5, priceArea3, priceSingle, sortOrder, isActive } = body;
 
   if (!id) {
     return NextResponse.json({ error: "Service ID fehlt" }, { status: 400 });
@@ -85,13 +87,21 @@ export async function PUT(
 
   const service = await prisma.tenantService.update({
     where: { id },
-    data: updateData,
+    data: {
+      gender,
+      serviceType,
+      name,
+      priceArea5: priceArea5 ?? null,
+      priceArea3: priceArea3 ?? null,
+      priceSingle,
+      sortOrder,
+      isActive,
+    },
   });
 
   return NextResponse.json(service);
 }
 
-// DELETE a service
 export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
