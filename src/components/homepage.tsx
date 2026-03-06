@@ -55,26 +55,23 @@ const Home = ({ tenant, pricingData: propPricingData }: HomeProps = {}) => {
 
   const INITIAL_TREATMENTS_COUNT = 4;
 
-  const updatePricing = (
-    items: SELECTED_TYPE[],
-    pricingType: string
-  ) => {
-    return items.map((item) => {
-      if (pricingType === "Area5" && item.treatment.pricing["ab 5 Areale"]) {
-        return { ...item, price: item.treatment.pricing["ab 5 Areale"] / 5 };
-      }
-      if (pricingType === "Area3" && item.treatment.pricing["ab 3 Areale"]) {
-        return { ...item, price: item.treatment.pricing["ab 3 Areale"] / 3 };
-      }
-      return {
-        ...item,
-        price:
-          item.treatment.pricing["Einzelpreis pro Behandlung"] ??
-          item.treatment.pricing["Kurspreis"] ??
-          0,
-      };
-    });
-  };
+const updatePricing = (items: SELECTED_TYPE[], pricingType: string) => {
+  return items.map((item) => {
+    if (pricingType === "Area5" && item.treatment.pricing["ab 5 Areale"]) {
+      return { ...item, price: item.treatment.pricing["ab 5 Areale"] };
+    }
+    if (pricingType === "Area3" && item.treatment.pricing["ab 3 Areale"]) {
+      return { ...item, price: item.treatment.pricing["ab 3 Areale"] };
+    }
+    return {
+      ...item,
+      price:
+        item.treatment.pricing["Einzelpreis pro Behandlung"] ??
+        item.treatment.pricing["Kurspreis"] ??
+        0,
+    };
+  });
+};
 
 
   const addItemToCart = (treatment: Treatment, area: string) => {

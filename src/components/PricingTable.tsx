@@ -58,11 +58,10 @@ const PricingTable = ({
               return (
                 <tr
                   key={index}
-                  className={`min-h-[52px] transition-all duration-200 cursor-pointer ${
-                    isSelected
+                  className={`min-h-[52px] transition-all duration-200 cursor-pointer ${isSelected
                       ? "bg-main-color/10 border-l-4 border-l-main-color"
                       : "hover:bg-main-color/5"
-                  }`}
+                    }`}
                   onClick={() => addItemToCart(treatment, selectedTreatment)}
                 >
                   <td className="px-3 md:px-4 py-4 text-center">
@@ -78,18 +77,15 @@ const PricingTable = ({
                   </td>
                   <td className="px-3 md:px-4 py-4 text-center hidden md:table-cell">
                     <span className="text-sm md:text-base font-semibold text-gray-600 dark:text-gray-400">
-                      {treatment.pricing["ab 5 Areale"]
-                        ? Math.round(treatment.pricing["ab 5 Areale"] / 5)
-                        : 0}€
+                      {treatment.pricing["ab 5 Areale"] ?? 0}€
                     </span>
                   </td>
                   <td className="px-3 md:px-4 py-4 text-center hidden sm:table-cell">
                     <span className="text-sm md:text-base font-semibold text-gray-600 dark:text-gray-400">
-                      {treatment.pricing["ab 3 Areale"]
-                        ? Math.round(treatment.pricing["ab 3 Areale"] / 3)
-                        : 0}€
+                      {treatment.pricing["ab 3 Areale"] ?? 0}€
                     </span>
                   </td>
+
                   <td className="px-3 md:px-4 py-4 text-center">
                     <span className="text-base md:text-lg font-bold text-secondary-color">
                       {(treatment.pricing["Einzelpreis pro Behandlung"] ||
