@@ -240,7 +240,7 @@ export default function TenantDetailPage() {
               className="flex items-center gap-1 text-emerald-600 hover:underline"
             >
               <ArrowLeft size={18} />
-              Zurueck
+              Zurück
             </Link>
             <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
               {tenant.name}

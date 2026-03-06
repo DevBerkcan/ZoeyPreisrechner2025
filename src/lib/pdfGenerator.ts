@@ -24,7 +24,7 @@ function hexToRgb(hex: string): [number, number, number] {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)]
-    : [5, 150, 105]; // fallback to #059669
+    : [196, 153, 148];
 }
 
 export async function generateQuotePDF(data: PDFData): Promise<Blob> {
@@ -34,10 +34,10 @@ export async function generateQuotePDF(data: PDFData): Promise<Blob> {
   // Colors (RGB) - use tenant color or default
   const mainColor: [number, number, number] = data.tenant?.mainColor
     ? hexToRgb(data.tenant.mainColor)
-    : [5, 150, 105];
+    : [196, 153, 148];
   const textColor: [number, number, number] = [51, 51, 51];
 
-  const companyName = data.tenant?.name || "NAZAR Beauty & Wellness";
+  const companyName = data.tenant?.name || "Skinbloom Aesthetics";
   // Split name for header display
   const nameParts = companyName.split(" ");
   const headerTitle = nameParts[0];

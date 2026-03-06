@@ -239,12 +239,13 @@ const Home = ({ tenant, pricingData: propPricingData }: HomeProps = {}) => {
                 selectedAreas={selectedItems.map((item) => item.treatment.name)}
               />
               <button
-                className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-red-500 text-sm text-white font-medium min-h-[44px] hover:bg-red-600 hover:shadow-md transition-all duration-200 active:scale-95 no-print"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gray-400 text-sm text-white font-medium min-h-[44px] hover:bg-gray-500 hover:shadow-md transition-all duration-200 active:scale-95 no-print"
                 onClick={handleReset}
               >
                 <RotateCcw size={16} />
                 Zurücksetzen
               </button>
+
             </div>
           </div>
 

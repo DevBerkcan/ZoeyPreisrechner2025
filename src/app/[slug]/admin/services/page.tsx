@@ -161,7 +161,7 @@ export default function AdminServicesPage() {
           <div className="flex items-center gap-4">
             <Link href={`/${slug}`} className="flex items-center gap-1 text-main-color hover:underline">
               <ArrowLeft size={18} />
-              Zurueck
+              Zurück
             </Link>
             <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Services verwalten</h1>
             <span className="text-sm text-gray-500 dark:text-gray-400">({services.length} Services)</span>

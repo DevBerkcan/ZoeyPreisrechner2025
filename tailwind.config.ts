@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -11,19 +12,24 @@ export default {
     extend: {
       colors: {
         beige: {
-          translucent: "rgba(212, 165, 116, 0.15)", // Leichter Beige-Schimmer
-          light: "#F5E6D3", // Helles Beige für Hintergründe
-          dark: "#C4956B", // Dunkleres Beige für Akzente
+          translucent: "rgba(212, 165, 116, 0.15)",
+          light: "#F5E6D3",
+          dark: "#C4956B",
         },
-        brown: "#6B4226", // Main brown for text
+        brown: "#6B4226",
         "dark-brown": "#4A3220",
         "medium-brown": "#8B5A2B",
         "dark-beige": "#E5D1B8",
         "light-beige": "#F7E9D8",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        "main-color": "var(--tenant-main-color, #059669)",
+        "main-color": "var(--tenant-main-color, #c49994)",
         "secondary-color": "var(--tenant-secondary-color, #D4A574)",
+        "corporate-rose": "var(--corporate-rose)",
+        "corporate-charcoal": "var(--corporate-charcoal)",
+        "corporate-beige": "var(--corporate-beige)",
+        "corporate-white": "var(--corporate-white)",
+        "corporate-grey": "var(--corporate-grey)",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",

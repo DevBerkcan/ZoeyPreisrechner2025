@@ -36,22 +36,22 @@ export async function POST(request: NextRequest) {
     const pdfBuffer = Buffer.from(await pdfBlob.arrayBuffer());
 
     const { data, error } = await resend.emails.send({
-      from: "NAZAR Beauty <angebote@nazar-beauty.de>",
+      from: "Skinbloom Aesthetics <info@skinbloom.de>",
       to: email,
-      subject: `Ihr Kostenvoranschlag - NAZAR Beauty`,
+      subject: `Ihr Kostenvoranschlag - Skinbloom Aesthetics`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #059669;">Ihr persoenliches Angebot</h2>
+          <h2 style="color: #c49994;">Ihr persoenliches Angebot</h2>
           <p>Liebe/r ${customerName},</p>
           <p>vielen Dank fuer Ihr Interesse an unseren Behandlungen!</p>
           <p>Im Anhang finden Sie Ihren individuellen Kostenvoranschlag.</p>
           <p>Bei Fragen stehen wir Ihnen gerne zur Verfuegung.</p>
           <br>
-          <p>Mit freundlichen Gruessen,<br>Ihr NAZAR Beauty Team</p>
+          <p>Mit freundlichen Gruessen,<br>Ihr Skinbloom Aesthetics Team</p>
           <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
           <p style="font-size: 12px; color: #888;">
-            NAZAR Beauty & Wellness<br>
-            E-Mail: info@nazar-beauty.de
+            Skinbloom Aesthetics<br>
+            E-Mail: info@skinbloom.de
           </p>
         </div>
       `,

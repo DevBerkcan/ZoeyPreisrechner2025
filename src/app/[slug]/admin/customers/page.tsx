@@ -16,6 +16,7 @@ import {
   Loader2,
 } from "lucide-react";
 import Link from "next/link";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 
 interface Customer {
   id: string;
@@ -40,6 +41,10 @@ export default function CustomersAdminPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedCustomer, setExpandedCustomer] = useState<string | null>(null);
+  const [confirmDialog, setConfirmDialog] = useState<{ open: boolean; customerId: string | null }>({
+    open: false,
+    customerId: null,
+  });
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -68,20 +73,17 @@ export default function CustomersAdminPage() {
     }
   };
 
-  const deleteCustomer = async (id: string) => {
-    if (!confirm("Möchten Sie diesen Kunden wirklich löschen?")) return;
+  const deleteCustomer = async () => {
+    if (!confirmDialog.customerId) return;
     try {
-      const response = await fetch(`/api/customers/${id}`, {
+      const response = await fetch(`/api/customers/${confirmDialog.customerId}`, {
         method: "DELETE",
       });
       if (response.ok) {
-        setCustomers(customers.filter((c) => c.id !== id));
-      } else {
-        alert("Fehler beim Löschen des Kunden");
+        setCustomers(customers.filter((c) => c.id !== confirmDialog.customerId));
       }
     } catch (error) {
       console.error("Fehler:", error);
-      alert("Fehler beim Löschen");
     }
   };
 
@@ -120,33 +122,24 @@ export default function CustomersAdminPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
-            <Link
-              href={`/${slug}`}
-              className="flex items-center gap-1 text-main-color hover:underline"
-            >
+            <Link href={`/${slug}`} className="flex items-center gap-1 text-main-color hover:underline">
               <ArrowLeft size={18} />
-              Zurueck
+              Zurück
             </Link>
-            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-              Kundenverwaltung
-            </h1>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              ({customers.length} Kunden)
-            </span>
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Kundenverwaltung</h1>
+            <span className="text-sm text-gray-500 dark:text-gray-400">({customers.length} Kunden)</span>
           </div>
           <button
             onClick={fetchCustomers}
-            className="flex items-center gap-2 px-4 py-2 bg-main-color text-white rounded-lg hover:bg-opacity-90"
+            className="flex items-center gap-2 px-4 py-2 bg-main-color text-white rounded-lg hover:opacity-90 transition-colors"
           >
             <RefreshCw size={16} />
             Aktualisieren
           </button>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
             <p className="text-sm text-gray-500 dark:text-gray-400">Gesamt Kunden</p>
@@ -154,19 +147,14 @@ export default function CustomersAdminPage() {
           </div>
           <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
             <p className="text-sm text-gray-500 dark:text-gray-400">Frauen</p>
-            <p className="text-2xl font-bold text-pink-600">
-              {customers.filter((c) => c.gender === "Frau").length}
-            </p>
+            <p className="text-2xl font-bold text-pink-600">{customers.filter((c) => c.gender === "Frau").length}</p>
           </div>
           <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
             <p className="text-sm text-gray-500 dark:text-gray-400">Männer</p>
-            <p className="text-2xl font-bold text-blue-600">
-              {customers.filter((c) => c.gender === "Mann").length}
-            </p>
+            <p className="text-2xl font-bold text-blue-600">{customers.filter((c) => c.gender === "Mann").length}</p>
           </div>
         </div>
 
-        {/* Search */}
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 mb-6">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
@@ -180,7 +168,6 @@ export default function CustomersAdminPage() {
           </div>
         </div>
 
-        {/* Customer List */}
         <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
           {filteredCustomers.length === 0 ? (
             <div className="p-8 text-center text-gray-500 dark:text-gray-400">
@@ -193,17 +180,13 @@ export default function CustomersAdminPage() {
                   <div
                     className="p-4 cursor-pointer"
                     onClick={() =>
-                      setExpandedCustomer(
-                        expandedCustomer === customer.id ? null : customer.id
-                      )
+                      setExpandedCustomer(expandedCustomer === customer.id ? null : customer.id)
                     }
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
                         <div
-                          className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ${
-                            customer.gender === "Frau" ? "bg-pink-500" : "bg-blue-500"
-                          }`}
+                          className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ${customer.gender === "Frau" ? "bg-pink-500" : "bg-blue-500"}`}
                         >
                           {customer.firstName.charAt(0)}
                           {customer.lastName.charAt(0)}
@@ -230,7 +213,10 @@ export default function CustomersAdminPage() {
                       </div>
                       <div className="flex items-center gap-4">
                         {customer.totalPrice && (
-                          <span className="px-3 py-1 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 rounded-full text-sm font-medium">
+                          <span
+                            className="px-3 py-1 rounded-full text-sm font-medium text-white"
+                            style={{ backgroundColor: "#c49994" }}
+                          >
                             {customer.totalPrice.toFixed(2)}€
                           </span>
                         )}
@@ -252,17 +238,13 @@ export default function CustomersAdminPage() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         {customer.notes && (
                           <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700">
-                            <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                              Notizen
-                            </p>
+                            <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Notizen</p>
                             <p className="text-gray-800 dark:text-gray-100">{customer.notes}</p>
                           </div>
                         )}
                         {customer.selectedAreas && customer.selectedAreas.length > 0 && (
                           <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700">
-                            <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                              Ausgewählte Areale
-                            </p>
+                            <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Ausgewählte Areale</p>
                             <ul className="text-sm text-gray-800 dark:text-gray-100 space-y-1">
                               {customer.selectedAreas.map((area, index) => (
                                 <li key={index} className="flex justify-between">
@@ -278,9 +260,9 @@ export default function CustomersAdminPage() {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            deleteCustomer(customer.id);
+                            setConfirmDialog({ open: true, customerId: customer.id });
                           }}
-                          className="flex items-center gap-2 px-3 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
+                          className="flex items-center gap-2 px-3 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                         >
                           <Trash2 size={16} />
                           Löschen
@@ -294,6 +276,17 @@ export default function CustomersAdminPage() {
           )}
         </div>
       </div>
+
+      <ConfirmDialog
+        open={confirmDialog.open}
+        onOpenChange={(open) => setConfirmDialog({ open, customerId: open ? confirmDialog.customerId : null })}
+        title="Kunden löschen"
+        description="Möchten Sie diesen Kunden wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+        confirmLabel="Löschen"
+        cancelLabel="Abbrechen"
+        variant="danger"
+        onConfirm={deleteCustomer}
+      />
     </div>
   );
 }
