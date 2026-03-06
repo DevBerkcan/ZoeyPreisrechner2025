@@ -17,7 +17,6 @@ import BeforeAfterGallery from "./BeforeAfterGallery";
 import ComparisonManager from "./ComparisonManager";
 import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { PrintButton } from "./PrintButton";
 
 export interface TenantConfig {
   id: string;
@@ -241,7 +240,6 @@ const Home = ({ tenant, pricingData: propPricingData }: HomeProps = {}) => {
               <BeforeAfterGallery
                 selectedAreas={selectedItems.map((item) => item.treatment.name)}
               />
-              <PrintButton />
               <button
                 className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-red-500 text-sm text-white font-medium min-h-[44px] hover:bg-red-600 hover:shadow-md transition-all duration-200 active:scale-95 no-print"
                 onClick={handleReset}

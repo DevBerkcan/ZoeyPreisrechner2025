@@ -43,18 +43,6 @@ const QuickNotes = ({ notes, onNotesChange }: QuickNotesProps) => {
 
   return (
     <div className="relative">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
-          notes.length > 0
-            ? "bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-300 border border-yellow-300 dark:border-yellow-700"
-            : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600"
-        } hover:bg-opacity-80`}
-      >
-        <StickyNote size={16} />
-        Notizen {notes.length > 0 && `(${notes.length})`}
-      </button>
-
       {isOpen && (
         <div className="absolute top-full left-0 mt-2 w-80 bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-50">
           <div className="p-3 border-b border-gray-100 dark:border-gray-700">
