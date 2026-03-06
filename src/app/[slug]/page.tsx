@@ -19,10 +19,13 @@ export default async function TenantPage({ params }: PageProps) {
   const tenant = await prisma.tenant.findUnique({
     where: { slug, isActive: true },
     include: {
-      services: {
-        where: { isActive: true },
-        orderBy: { sortOrder: "asc" },
-      },
+services: {
+  where: { isActive: true },
+  orderBy: { sortOrder: "asc" },
+  include: {
+    serviceType: true,
+  },
+},
     },
   });
 

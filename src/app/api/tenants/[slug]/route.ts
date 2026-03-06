@@ -13,6 +13,7 @@ export async function GET(
     include: {
       services: {
         where: { isActive: true },
+        include: { serviceType: true },
         orderBy: { sortOrder: "asc" },
       },
     },

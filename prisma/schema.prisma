@@ -8,42 +8,58 @@ datasource db {
 }
 
 model Tenant {
-  id             String          @id @default(uuid())
-  slug           String          @unique
+  id             String              @id @default(uuid())
+  slug           String              @unique
   name           String
   logoUrl        String?
-  mainColor      String          @default("#059669")
-  secondaryColor String          @default("#D4A574")
+  mainColor      String              @default("#059669")
+  secondaryColor String              @default("#D4A574")
   contactEmail   String?
   contactPhone   String?
   website        String?
-  isActive       Boolean         @default(true)
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  isActive       Boolean             @default(true)
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
   customers      Customer[]
   services       TenantService[]
-  admins         admin[]
+  serviceTypes   TenantServiceType[]
+  admins         Admin[]
 }
 
 model TenantService {
-  id          String   @id @default(uuid())
-  tenantId    String
-  gender      String
-  serviceType String
-  name        String
-  priceArea5  Float?
-  priceArea3  Float?
-  priceSingle Float
-  sortOrder   Int      @default(0)
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id            String            @id @default(cuid())
+  tenantId      String
+  gender        String
+  name          String
+  priceArea5    Float?
+  priceArea3    Float?
+  priceSingle   Float
+  sortOrder     Int               @default(0)
+  isActive      Boolean           @default(true)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  serviceTypeId String
+  serviceType   TenantServiceType @relation(fields: [serviceTypeId], references: [id], onDelete: Cascade)
+  tenant        Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
-  @@index([tenantId, gender, serviceType])
+  @@index([tenantId, gender, serviceTypeId])
 }
 
-model admin {
+model TenantServiceType {
+  id        String          @id @default(cuid())
+  tenantId  String
+  name      String
+  sortOrder Int             @default(0)
+  isActive  Boolean         @default(true)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  services  TenantService[]
+  tenant    Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+}
+
+model Admin {
   id       String   @id @default(uuid())
   username String
   password String
@@ -66,10 +82,4 @@ model Customer {
   updatedAt     DateTime @updatedAt
   tenantId      String?
   tenant        Tenant?  @relation(fields: [tenantId], references: [id])
-}
-
-model playing_with_neon {
-  id    Int    @id @default(autoincrement())
-  name  String
-  value Float? @db.Real
 }

@@ -8,21 +8,17 @@ export async function GET(
 ) {
   const { slug } = await params;
 
-  const tenant = await prisma.tenant.findUnique({
-    where: { slug },
-    include: {
-      services: {
-        include: { serviceType: true },
-        orderBy: [{ gender: "asc" }, { sortOrder: "asc" }],
-      },
-    },
-  });
-
+  const tenant = await prisma.tenant.findUnique({ where: { slug } });
   if (!tenant) {
     return NextResponse.json({ error: "Tenant nicht gefunden" }, { status: 404 });
   }
 
-  return NextResponse.json(tenant.services);
+  const serviceTypes = await prisma.tenantServiceType.findMany({
+    where: { tenantId: tenant.id },
+    orderBy: { sortOrder: "asc" },
+  });
+
+  return NextResponse.json(serviceTypes);
 }
 
 export async function POST(
@@ -41,28 +37,22 @@ export async function POST(
   }
 
   const body = await request.json();
-  const { gender, serviceTypeId, name, priceArea5, priceArea3, priceSingle, sortOrder, isActive } = body;
+  const { name, sortOrder } = body;
 
-  if (!gender || !serviceTypeId || !name || priceSingle == null) {
-    return NextResponse.json({ error: "Pflichtfelder fehlen" }, { status: 400 });
+  if (!name) {
+    return NextResponse.json({ error: "Name ist ein Pflichtfeld" }, { status: 400 });
   }
 
-  const service = await prisma.tenantService.create({
+  const serviceType = await prisma.tenantServiceType.create({
     data: {
       tenantId: tenant.id,
-      gender,
-      serviceTypeId,
       name,
-      priceArea5: priceArea5 ?? null,
-      priceArea3: priceArea3 ?? null,
-      priceSingle,
       sortOrder: sortOrder ?? 0,
-      isActive: isActive ?? true,
+      isActive: true,
     },
-    include: { serviceType: true },
   });
 
-  return NextResponse.json(service, { status: 201 });
+  return NextResponse.json(serviceType, { status: 201 });
 }
 
 export async function PUT(
@@ -74,35 +64,19 @@ export async function PUT(
     return NextResponse.json({ error: "Nicht autorisiert" }, { status: 401 });
   }
 
-  const { slug } = await params;
-  const tenant = await prisma.tenant.findUnique({ where: { slug } });
-  if (!tenant) {
-    return NextResponse.json({ error: "Tenant nicht gefunden" }, { status: 404 });
-  }
-
   const body = await request.json();
-  const { id, gender, serviceTypeId, name, priceArea5, priceArea3, priceSingle, sortOrder, isActive } = body;
+  const { id, name, sortOrder, isActive } = body;
 
   if (!id) {
-    return NextResponse.json({ error: "Service ID fehlt" }, { status: 400 });
+    return NextResponse.json({ error: "ServiceType ID fehlt" }, { status: 400 });
   }
 
-  const service = await prisma.tenantService.update({
+  const serviceType = await prisma.tenantServiceType.update({
     where: { id },
-    data: {
-      gender,
-      serviceTypeId,
-      name,
-      priceArea5: priceArea5 ?? null,
-      priceArea3: priceArea3 ?? null,
-      priceSingle,
-      sortOrder,
-      isActive,
-    },
-    include: { serviceType: true },
+    data: { name, sortOrder, isActive },
   });
 
-  return NextResponse.json(service);
+  return NextResponse.json(serviceType);
 }
 
 export async function DELETE(
@@ -118,10 +92,10 @@ export async function DELETE(
   const id = searchParams.get("id");
 
   if (!id) {
-    return NextResponse.json({ error: "Service ID fehlt" }, { status: 400 });
+    return NextResponse.json({ error: "ServiceType ID fehlt" }, { status: 400 });
   }
 
-  await prisma.tenantService.delete({ where: { id } });
+  await prisma.tenantServiceType.delete({ where: { id } });
 
   return NextResponse.json({ success: true });
 }

@@ -1,34 +1,46 @@
-import { GenderPricingData } from "@/app/types/types";
+interface Treatment {
+  id: string;
+  name: string;
+  pricing: {
+    "ab 5 Areale"?: number;
+    "ab 3 Areale"?: number;
+    "Einzelpreis pro Behandlung": number;
+  };
+}
 
-interface TenantServiceRow {
+type Service = Record<string, Treatment[]>;
+type GenderPricingData = Record<string, Service>;
+
+interface ServiceWithType {
   id: string;
   gender: string;
-  serviceType: string;
+  serviceTypeId: string;
+  serviceType: { id: string; name: string };
   name: string;
   priceArea5: number | null;
   priceArea3: number | null;
   priceSingle: number;
   sortOrder: number;
+  isActive: boolean;
 }
 
-export function transformToGenderPricingData(
-  services: TenantServiceRow[]
-): GenderPricingData {
+export function transformToGenderPricingData(services: ServiceWithType[]): GenderPricingData {
   const result: GenderPricingData = {};
 
   for (const service of services) {
-    const { gender, serviceType, name, priceArea5, priceArea3, priceSingle, sortOrder } = service;
+    const gender = service.gender;
+    const typeName = service.serviceType.name;
 
     if (!result[gender]) result[gender] = {};
-    if (!result[gender][serviceType]) result[gender][serviceType] = [];
+    if (!result[gender][typeName]) result[gender][typeName] = [];
 
-    result[gender][serviceType].push({
-      id: sortOrder,
-      name,
+    result[gender][typeName].push({
+      id: service.id,
+      name: service.name,
       pricing: {
-        ...(priceArea5 != null && priceArea5 > 0 ? { "ab 5 Areale": priceArea5 } : {}),
-        ...(priceArea3 != null && priceArea3 > 0 ? { "ab 3 Areale": priceArea3 } : {}),
-        "Einzelpreis pro Behandlung": priceSingle,
+        "ab 5 Areale": service.priceArea5 ?? undefined,
+        "ab 3 Areale": service.priceArea3 ?? undefined,
+        "Einzelpreis pro Behandlung": service.priceSingle,
       },
     });
   }
