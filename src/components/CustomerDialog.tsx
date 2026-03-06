@@ -28,13 +28,17 @@ interface CustomerDialogProps {
   currentGender?: string;
   selectedAreas?: { name: string; price: number }[];
   totalPrice?: number;
+  triggerClassName?: string;
+  triggerLabel?: string;
 }
 
 const CustomerDialog = ({
   onSave,
   currentGender = "Frau",
   selectedAreas = [],
-  totalPrice = 0
+  totalPrice = 0,
+  triggerClassName,
+  triggerLabel,
 }: CustomerDialogProps) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -83,12 +87,26 @@ const CustomerDialog = ({
     }
   };
 
+  const resetForm = () => {
+    setSavedCustomer(null);
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      gender: currentGender,
+      notes: "",
+    });
+  };
+
+  const defaultTriggerClass = "flex items-center gap-2 px-4 py-2.5 rounded-lg bg-main-color text-white text-sm font-medium min-h-[44px] hover:opacity-90 hover:shadow-md transition-all duration-200 active:scale-95";
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button className="flex items-center gap-2 px-4 py-2 rounded-md bg-main-color text-white text-sm hover:bg-opacity-90 transition-colors">
+        <button className={triggerClassName ?? defaultTriggerClass}>
           <UserPlus size={18} />
-          Neuer Kunde
+          {triggerLabel ?? "Neuer Kunde"}
         </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -104,7 +122,7 @@ const CustomerDialog = ({
               </DialogDescription>
             </DialogHeader>
             <div className="mt-4 space-y-4">
-              <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-md">
+              <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
                 <p className="text-sm text-green-800 dark:text-green-300 mb-3">
                   Jetzt können Sie ein Angebot als PDF erstellen oder per E-Mail versenden.
                 </p>
@@ -136,36 +154,15 @@ const CustomerDialog = ({
               <div className="flex justify-end gap-3">
                 <button
                   type="button"
-                  onClick={() => {
-                    setSavedCustomer(null);
-                    setFormData({
-                      firstName: "",
-                      lastName: "",
-                      email: "",
-                      phone: "",
-                      gender: currentGender,
-                      notes: "",
-                    });
-                  }}
-                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  onClick={resetForm}
+                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                 >
                   Neuen Kunden anlegen
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    setOpen(false);
-                    setSavedCustomer(null);
-                    setFormData({
-                      firstName: "",
-                      lastName: "",
-                      email: "",
-                      phone: "",
-                      gender: currentGender,
-                      notes: "",
-                    });
-                  }}
-                  className="px-4 py-2 bg-main-color text-white rounded-md hover:bg-opacity-90"
+                  onClick={() => { setOpen(false); resetForm(); }}
+                  className="px-4 py-2 bg-main-color text-white rounded-lg hover:opacity-90 transition-colors"
                 >
                   Fertig
                 </button>
@@ -174,122 +171,108 @@ const CustomerDialog = ({
           </>
         ) : (
           <>
-        <DialogHeader>
-          <DialogTitle>Neuen Kunden anlegen</DialogTitle>
-          <DialogDescription>
-            Erfasse die Kundendaten für das Beratungsgespräch.
-          </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                Vorname *
-              </label>
-              <input
-                type="text"
-                value={formData.firstName}
-                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-main-color"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                Nachname *
-              </label>
-              <input
-                type="text"
-                value={formData.lastName}
-                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-main-color"
-                required
-              />
-            </div>
-          </div>
+            <DialogHeader>
+              <DialogTitle>Neuen Kunden anlegen</DialogTitle>
+              <DialogDescription>
+                Erfasse die Kundendaten für das Beratungsgespräch.
+              </DialogDescription>
+            </DialogHeader>
+            <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Vorname *</label>
+                  <input
+                    type="text"
+                    value={formData.firstName}
+                    onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-main-color"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Nachname *</label>
+                  <input
+                    type="text"
+                    value={formData.lastName}
+                    onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-main-color"
+                    required
+                  />
+                </div>
+              </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-              E-Mail
-            </label>
-            <input
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-main-color"
-            />
-          </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">E-Mail</label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-main-color"
+                />
+              </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-              Telefon
-            </label>
-            <input
-              type="tel"
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-main-color"
-            />
-          </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Telefon</label>
+                <input
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-main-color"
+                />
+              </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-              Geschlecht
-            </label>
-            <select
-              value={formData.gender}
-              onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-main-color"
-            >
-              <option value="Frau">Frau</option>
-              <option value="Mann">Mann</option>
-            </select>
-          </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Geschlecht</label>
+                <select
+                  value={formData.gender}
+                  onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-main-color"
+                >
+                  <option value="Frau">Frau</option>
+                  <option value="Mann">Mann</option>
+                </select>
+              </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-              Notizen (Hauttyp, Allergien, etc.)
-            </label>
-            <textarea
-              value={formData.notes}
-              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-              rows={3}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-main-color"
-              placeholder="z.B. empfindliche Haut, keine Allergien bekannt..."
-            />
-          </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Notizen (Hauttyp, Allergien, etc.)</label>
+                <textarea
+                  value={formData.notes}
+                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-main-color"
+                  placeholder="z.B. empfindliche Haut, keine Allergien bekannt..."
+                />
+              </div>
 
-          {selectedAreas.length > 0 && (
-            <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-md">
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-                Ausgewählte Areale werden gespeichert:
-              </p>
-              <ul className="text-sm text-gray-600 dark:text-gray-400">
-                {selectedAreas.map((area, index) => (
-                  <li key={index}>• {area.name} - {area.price}€</li>
-                ))}
-              </ul>
-              <p className="text-sm font-bold mt-2">Gesamt: {totalPrice}€</p>
-            </div>
-          )}
+              {selectedAreas.length > 0 && (
+                <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Ausgewählte Areale:</p>
+                  <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-0.5">
+                    {selectedAreas.map((area, index) => (
+                      <li key={index}>• {area.name} — {area.price}€</li>
+                    ))}
+                  </ul>
+                  <p className="text-sm font-bold mt-2 text-gray-800 dark:text-gray-100">Gesamt: {totalPrice}€</p>
+                </div>
+              )}
 
-          <div className="flex justify-end gap-3 pt-4">
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
-            >
-              Abbrechen
-            </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-4 py-2 bg-main-color text-white rounded-md hover:bg-opacity-90 disabled:opacity-50"
-            >
-              {loading ? "Speichern..." : "Kunde speichern"}
-            </button>
-          </div>
-        </form>
+              <div className="flex justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                >
+                  Abbrechen
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-4 py-2 bg-main-color text-white rounded-lg hover:opacity-90 disabled:opacity-50 transition-colors"
+                >
+                  {loading ? "Speichern..." : "Kunde speichern"}
+                </button>
+              </div>
+            </form>
           </>
         )}
       </DialogContent>

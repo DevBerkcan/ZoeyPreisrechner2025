@@ -17,6 +17,7 @@ import BeforeAfterGallery from "./BeforeAfterGallery";
 import ComparisonManager from "./ComparisonManager";
 import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { RotateCcw } from "lucide-react";
 
 export interface TenantConfig {
   id: string;
@@ -55,23 +56,23 @@ const Home = ({ tenant, pricingData: propPricingData }: HomeProps = {}) => {
 
   const INITIAL_TREATMENTS_COUNT = 4;
 
-const updatePricing = (items: SELECTED_TYPE[], pricingType: string) => {
-  return items.map((item) => {
-    if (pricingType === "Area5" && item.treatment.pricing["ab 5 Areale"]) {
-      return { ...item, price: item.treatment.pricing["ab 5 Areale"] };
-    }
-    if (pricingType === "Area3" && item.treatment.pricing["ab 3 Areale"]) {
-      return { ...item, price: item.treatment.pricing["ab 3 Areale"] };
-    }
-    return {
-      ...item,
-      price:
-        item.treatment.pricing["Einzelpreis pro Behandlung"] ??
-        item.treatment.pricing["Kurspreis"] ??
-        0,
-    };
-  });
-};
+  const updatePricing = (items: SELECTED_TYPE[], pricingType: string) => {
+    return items.map((item) => {
+      if (pricingType === "Area5" && item.treatment.pricing["ab 5 Areale"]) {
+        return { ...item, price: item.treatment.pricing["ab 5 Areale"] };
+      }
+      if (pricingType === "Area3" && item.treatment.pricing["ab 3 Areale"]) {
+        return { ...item, price: item.treatment.pricing["ab 3 Areale"] };
+      }
+      return {
+        ...item,
+        price:
+          item.treatment.pricing["Einzelpreis pro Behandlung"] ??
+          item.treatment.pricing["Kurspreis"] ??
+          0,
+      };
+    });
+  };
 
 
   const addItemToCart = (treatment: Treatment, area: string) => {
@@ -182,7 +183,7 @@ const updatePricing = (items: SELECTED_TYPE[], pricingType: string) => {
 
   return (
     <div className="w-full bg-gray-50 dark:bg-gray-900 text-white overflow-hidden relative">
-<div className="min-h-[calc(100vh-0px)] overflow-auto pb-48 mb-0">
+      <div className="min-h-[calc(100vh-0px)] overflow-auto pb-48 mb-0">
 
         <Navbar tenant={tenant} />
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
@@ -197,8 +198,8 @@ const updatePricing = (items: SELECTED_TYPE[], pricingType: string) => {
                     setSelectedTreatment(firstTreatment);
                   }}
                   className={`px-6 py-2.5 rounded-lg font-semibold min-h-[44px] transition-all duration-200 active:scale-95 ${gender === g
-                      ? "bg-main-color text-white shadow-lg ring-2 ring-main-color ring-offset-2"
-                      : "bg-white dark:bg-gray-800 text-main-color border-2 border-main-color hover:bg-main-color/10 hover:shadow-md"
+                    ? "bg-main-color text-white shadow-lg ring-2 ring-main-color ring-offset-2"
+                    : "bg-white dark:bg-gray-800 text-main-color border-2 border-main-color hover:bg-main-color/10 hover:shadow-md"
                     }`}
                 >
                   {g}
@@ -241,6 +242,7 @@ const updatePricing = (items: SELECTED_TYPE[], pricingType: string) => {
                 className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-red-500 text-sm text-white font-medium min-h-[44px] hover:bg-red-600 hover:shadow-md transition-all duration-200 active:scale-95 no-print"
                 onClick={handleReset}
               >
+                <RotateCcw size={16} />
                 Zurücksetzen
               </button>
             </div>
@@ -262,8 +264,8 @@ const updatePricing = (items: SELECTED_TYPE[], pricingType: string) => {
                       key={treatmentType}
                       onClick={() => setSelectedTreatment(treatmentType)}
                       className={`px-4 py-3 min-h-[48px] border-2 rounded-lg font-medium transition-all duration-200 active:scale-95 ${selectedTreatment === treatmentType
-                          ? "bg-main-color text-white border-main-color shadow-lg scale-[1.02]"
-                          : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-700 hover:border-main-color hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700"
+                        ? "bg-main-color text-white border-main-color shadow-lg scale-[1.02]"
+                        : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-700 hover:border-main-color hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700"
                         }`}
                     >
                       {treatmentType.replace(/_/g, " ")}
@@ -310,6 +312,7 @@ const updatePricing = (items: SELECTED_TYPE[], pricingType: string) => {
         discountPercent={discountPercent}
         setDiscountPercent={setDiscountPercent}
         total={total}
+        currentGender={gender}
       />
     </div>
   );
