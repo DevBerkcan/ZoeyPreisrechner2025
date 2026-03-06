@@ -7,5 +7,5 @@ export default async function Page() {
     redirect("/api/auth/signin");
   }
 
-  redirect("/admin/tenants");
+  redirect("/skinbloom");
 }
